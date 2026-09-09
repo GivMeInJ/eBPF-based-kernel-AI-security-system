@@ -1,0 +1,47 @@
+#!/bin/sh
+
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mkdir -p /sys/kernel/tracing
+mount -t tracefs tracefs /sys/kernel/tracing
+mkdir -p /sys/kernel/security
+mount -t securityfs securityfs /sys/kernel/security
+mount -t tmpfs tmpfs /tmp
+
+echo "active LSMs:"
+cat /sys/kernel/security/lsm || true
+
+/host-events-static --no-cgroup-hooks --network-events none \
+  --output /events.ndjson 2>/agent.log &
+agent_pid=$!
+
+sleep 2
+cat /etc/passwd >/dev/null
+touch /tmp/ebpf-lsm-validation
+rm /tmp/ebpf-lsm-validation
+sleep 1
+
+kill -INT "${agent_pid}"
+wait "${agent_pid}"
+agent_status=$?
+
+cat /agent.log
+
+if [ "${agent_status}" -eq 0 ] && \
+   grep -q '"event_type":"FILE_OPEN"' /events.ndjson && \
+   grep -q '"event_type":"FILE_UNLINK"' /events.ndjson && \
+   grep -q '"event_type":"HEALTH".*"uid":65534,"gid":65534' \
+     /events.ndjson; then
+  echo "EBPF_LSM_FILE_TEST_PASS"
+  test_status=0
+else
+  echo "EBPF_LSM_FILE_TEST_FAIL"
+  head -n 20 /events.ndjson 2>/dev/null || true
+  test_status=1
+fi
+
+sync
+poweroff -f
+exit "${test_status}"

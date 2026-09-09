@@ -1,0 +1,8 @@
+name: ebpf-agent-lts
+profiles:
+  - id: ubuntu-22.04-5.15
+    required: true
+  - id: debian-12-6.1
+    required: true
+  - id: ubuntu-24.04-6.8
+    required: true
