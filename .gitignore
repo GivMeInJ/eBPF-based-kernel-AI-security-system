@@ -1,0 +1,5 @@
+.output/
+agent/ai/traces/
+*.bin
+__pycache__/
+*.py[cod]

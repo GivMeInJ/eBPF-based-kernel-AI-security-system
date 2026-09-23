@@ -118,6 +118,7 @@ struct options {
 	uid_t run_uid;
 	gid_t run_gid;
 	bool enable_syscalls;
+	bool syscalls_enter_only;
 	bool enable_files;
 	bool enable_cgroup_hooks;
 	bool self_test;
@@ -924,6 +925,7 @@ enum option_id {
 	OPTION_RUN_AS,
 	OPTION_RETAIN_PRIVILEGES,
 	OPTION_ALLOW_SPECIAL_OUTPUT,
+	OPTION_SYSCALLS_ENTER_ONLY,
 };
 
 static void usage(const char *program)
@@ -931,6 +933,7 @@ static void usage(const char *program)
 	fprintf(stderr,
 		"Usage: %s [OPTIONS]\n"
 		"  --syscalls           Enable high-volume syscall enter/exit events\n"
+		"  --syscalls-enter-only  Enable syscall enter events only\n"
 		"  --no-file            Disable BPF LSM file sensors\n"
 		"  --target-pid PID     Collect only this process TGID\n"
 		"  --target-cgroup ID   Collect only this cgroup ID\n"
@@ -958,6 +961,8 @@ static int parse_options(int argc, char **argv, struct options *options)
 {
 	static const struct option long_options[] = {
 		{ "syscalls", no_argument, NULL, 's' },
+		{ "syscalls-enter-only", no_argument, NULL,
+		  OPTION_SYSCALLS_ENTER_ONLY },
 		{ "no-file", no_argument, NULL, 'F' },
 		{ "target-pid", required_argument, NULL, 'p' },
 		{ "target-cgroup", required_argument, NULL, 'c' },
@@ -992,6 +997,10 @@ static int parse_options(int argc, char **argv, struct options *options)
 		switch (option) {
 		case 's':
 			options->enable_syscalls = true;
+			break;
+		case OPTION_SYSCALLS_ENTER_ONLY:
+			options->enable_syscalls = true;
+			options->syscalls_enter_only = true;
 			break;
 		case 'F':
 			options->enable_files = false;
@@ -1502,10 +1511,13 @@ int main(int argc, char **argv)
 		AGENT_EVENT_BIT(AGENT_EVENT_PROCESS_EXEC) |
 		AGENT_EVENT_BIT(AGENT_EVENT_PROCESS_EXIT) |
 		options.network_event_mask;
-	if (options.enable_syscalls)
+	if (options.enable_syscalls) {
 		configuration.event_mask |=
-			AGENT_EVENT_BIT(AGENT_EVENT_SYSCALL_ENTER) |
-			AGENT_EVENT_BIT(AGENT_EVENT_SYSCALL_EXIT);
+			AGENT_EVENT_BIT(AGENT_EVENT_SYSCALL_ENTER);
+		if (!options.syscalls_enter_only)
+			configuration.event_mask |=
+				AGENT_EVENT_BIT(AGENT_EVENT_SYSCALL_EXIT);
+	}
 	if (options.enable_files)
 		configuration.event_mask |=
 			AGENT_EVENT_BIT(AGENT_EVENT_FILE_OPEN) |

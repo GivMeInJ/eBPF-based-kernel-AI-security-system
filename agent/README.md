@@ -128,7 +128,18 @@ Collector가 `/proc/self/ns/pid`의 device/inode를 커널 설정 Map에 전달�
 ```bash
 sudo .output/host-events --syscalls --target-pid 4210
 sudo .output/host-events --syscalls --target-cgroup 12345678
+sudo .output/host-events --syscalls-enter-only --target-cgroup 12345678
 ```
+
+`--syscalls-enter-only` emits only `SYSCALL_ENTER`. Use it for the AI pipeline,
+which builds syscall-frequency features and does not use return values. It cuts
+high-volume syscall output roughly in half.
+
+## AI model pipeline
+
+`ai/` contains the normal-data collection conversion and training tools. It
+keeps collector data, the syscall-ID map, model metadata, and the trained model
+as one deployable set. See [`ai/README.md`](ai/README.md).
 
 네트워크 Port·protocol 필터와 Ring Buffer 크기를 지정할 수 있습니다.
 
