@@ -1,0 +1,127 @@
+{
+  "status": "v2_known_type_and_unseen_group_validation_complete_primary_goal_not_met",
+  "ssh_alias": "whs",
+  "job_pid": 1955200,
+  "output_directory": "/whs/data_event_time_raw_20261001_verify_v2_retest",
+  "run_log": "/whs/data_event_time_raw_20261001_verify_v2_retest.run.log",
+  "pid_file": "/whs/data_event_time_raw_20261001_verify_v2_retest.pid",
+  "collector_log": "/whs/data_event_time_raw_20261001_verify_v2_retest/session_1.collector.log",
+  "accepted_npz": "/whs/data_event_time_raw_20261001_verify_v2_retest/session_1.event_time.npz",
+  "plan": "/whs/event_time_v2_run_plan.json",
+  "automatic_ai_checks": false,
+  "scheduled_automation_created": false,
+  "capture_finish_behavior": "Existing reviewed capture script stops/waits collector, runs loss/coverage acceptance gate, publishes NPZ only on success, then checksum-verifies compressed archive. No V2 model training or promotion in this job.",
+  "next_user_requested_check": [
+    "Use existing normal-only IsolationForest pipeline as the research starting point; verify feature and scoring compatibility before adapting.",
+    "Define service/role normal baselines and administrator negative controls; keep precursor-only policy.",
+    "Freeze the next model and calibration policy before collecting untouched normal and new attack-family evaluation data.",
+    "Measure unseen-group DR and FPR separately from known-type session accuracy; do not tune this already studied test set."
+  ],
+  "v1_result": {
+    "dr": 0.9925373134328358,
+    "fpr": 0.02,
+    "target_met": false,
+    "live_candidate_directory": "/whs/live_candidate_v1_20261001"
+  },
+  "behavior_probe_result": {
+    "observed_advisories": 2,
+    "actual_gap_sec": [
+      600.096403106,
+      10.034326357
+    ],
+    "scope": "advisory_only_verified_task_lineage"
+  },
+  "build_test": {
+    "isolated_collector_sha256": "c0878dcaca499e721397216f84017cb9b76616973cd76e1d7bf021a280a8379d",
+    "load_test_health_frames": 3,
+    "load_test_event_loss": 0,
+    "writer_queue_capacity": 262144,
+    "ringbuf_bytes": 67108864
+  },
+  "primary_goal": "Detection of attack groups absent from training; known-type session accuracy is secondary",
+  "v2_result": {
+    "tp": 133,
+    "fn": 1,
+    "fp": 0,
+    "tn": 255,
+    "runtime_matched_buckets": 389,
+    "known_type_only": true,
+    "v1_identical_on_same_test": true
+  },
+  "v2_deployment": "Offline artifact only. Existing V1 baseline remains; independent review found no demonstrated V2 benefit for duplicate shadow monitoring.",
+  "unseen_group_results": {
+    "exfiltration": {
+      "v1_like_first2": {
+        "tp": 0,
+        "fn": 6,
+        "fp": 0,
+        "tn": 255,
+        "dr": 0.0,
+        "fpr": 0.0
+      },
+      "v2_like_all4": {
+        "tp": 6,
+        "fn": 0,
+        "fp": 3,
+        "tn": 252,
+        "dr": 1.0,
+        "fpr": 0.011764705882352941
+      }
+    },
+    "destructive_files": {
+      "v1_like_first2": {
+        "tp": 0,
+        "fn": 64,
+        "fp": 0,
+        "tn": 255,
+        "dr": 0.0,
+        "fpr": 0.0
+      },
+      "v2_like_all4": {
+        "tp": 0,
+        "fn": 64,
+        "fp": 1,
+        "tn": 254,
+        "dr": 0.0,
+        "fpr": 0.00392156862745098
+      }
+    },
+    "remote_shell": {
+      "v1_like_first2": {
+        "tp": 0,
+        "fn": 3,
+        "fp": 0,
+        "tn": 255,
+        "dr": 0.0,
+        "fpr": 0.0
+      },
+      "v2_like_all4": {
+        "tp": 3,
+        "fn": 0,
+        "fp": 0,
+        "tn": 255,
+        "dr": 1.0,
+        "fpr": 0.0
+      }
+    },
+    "resource_abuse": {
+      "v1_like_first2": {
+        "tp": 0,
+        "fn": 61,
+        "fp": 0,
+        "tn": 255,
+        "dr": 0.0,
+        "fpr": 0.0
+      },
+      "v2_like_all4": {
+        "tp": 0,
+        "fn": 61,
+        "fp": 0,
+        "tn": 255,
+        "dr": 0.0,
+        "fpr": 0.0
+      }
+    }
+  },
+  "primary_goal_achieved": false
+}

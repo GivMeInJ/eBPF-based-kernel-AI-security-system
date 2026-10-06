@@ -1,0 +1,34 @@
+{
+  "protocol": "controlled_semantic_attack_group_holdout_v1",
+  "goal": "Detection of attack groups completely excluded from model training, rather than only unseen sessions.",
+  "training_sessions": 4,
+  "calibration": "Fresh verify_v2 session normal rows only; target FPR0.005",
+  "test": "Fresh verify_v2_retest session normals plus held-out attack group",
+  "groups": {
+    "exfiltration": [
+      "bulk_exfil",
+      "dns_exfil"
+    ],
+    "destructive_files": [
+      "ransom_sim",
+      "wiper_sim"
+    ],
+    "remote_shell": [
+      "reverse_shell"
+    ],
+    "resource_abuse": [
+      "resource_hijack"
+    ]
+  },
+  "model": "Fixed300tree balanced RF seed42,26stablefeatures; no heldout tuning",
+  "limitations": [
+    "Controlled local/dummy behavior groups; not unknown real compromise or zero-day efficacy",
+    "Specified after known-type V2 metric, before any group-heldout scores; feature design informed by existing development research",
+    "One test session; correlated buckets and small groups"
+  ],
+  "training_regimes": {
+    "two_sessions": "First two canonical training session IDs, V1-like amount, with held-out group excluded",
+    "four_sessions": "All four canonical training session IDs, V2-like amount, with held-out group excluded"
+  },
+  "regime_comparison": "Same model parameters,26 features, fresh normal calibration and test for both regimes; measure extra development data effect without treating a model trained on target attacks as unseen baseline."
+}

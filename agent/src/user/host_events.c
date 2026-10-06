@@ -40,6 +40,17 @@ _Static_assert(sizeof(struct agent_health_payload) == 40,
 		       "schema v1 health payload layout changed");
 _Static_assert(sizeof(struct agent_process_payload) == 272,
 	       "schema v1 process payload layout changed");
+_Static_assert(offsetof(struct agent_event, data.process) +
+	       sizeof(struct agent_process_payload) == 360,
+	       "schema v1 process minimum size changed");
+_Static_assert(offsetof(struct agent_event, data.process.filename) == 104,
+	       "schema v1 exec filename offset changed");
+_Static_assert(offsetof(struct agent_event, data.fork.parent_pid) == 88 &&
+	       offsetof(struct agent_event, data.fork.child_pid) == 92 &&
+	       offsetof(struct agent_event, data.fork.reserved) == 96 &&
+	       offsetof(struct agent_event, data.fork.child_tgid) == 100 &&
+	       offsetof(struct agent_event, data.fork.child_task_start_ns) == 104,
+	       "schema v1 fork identity offsets changed");
 _Static_assert(sizeof(struct agent_syscall_payload) == 16,
 	       "schema v1 syscall payload layout changed");
 _Static_assert(sizeof(struct agent_file_payload) == 288,
@@ -119,6 +130,7 @@ struct options {
 	gid_t run_gid;
 	bool enable_syscalls;
 	bool syscalls_enter_only;
+	bool fork_identities;
 	bool enable_files;
 	bool enable_cgroup_hooks;
 	bool self_test;
@@ -380,8 +392,15 @@ static int write_event(void *context, void *data, size_t data_size)
 	switch (event->header.type) {
 	case AGENT_EVENT_PROCESS_FORK:
 		fprintf(output, ",\"parent_pid\":%u,\"child_pid\":%u",
-			event->data.process.parent_pid,
-			event->data.process.child_pid);
+			event->data.fork.parent_pid,
+			event->data.fork.child_pid);
+		if (event->header.flags & AGENT_FLAG_FORK_CHILD_ID_VALID)
+			fprintf(output,
+				",\"child_tgid\":%u,\"child_task_start_ns\":%" PRIu64,
+				event->data.fork.child_tgid,
+				(uint64_t)event->data.fork.child_task_start_ns);
+		else
+			fputs(",\"child_tgid\":null,\"child_task_start_ns\":null", output);
 		break;
 	case AGENT_EVENT_PROCESS_EXEC:
 		fprintf(output,
@@ -926,6 +945,7 @@ enum option_id {
 	OPTION_RETAIN_PRIVILEGES,
 	OPTION_ALLOW_SPECIAL_OUTPUT,
 	OPTION_SYSCALLS_ENTER_ONLY,
+	OPTION_FORK_IDENTITIES,
 };
 
 static void usage(const char *program)
@@ -934,6 +954,7 @@ static void usage(const char *program)
 		"Usage: %s [OPTIONS]\n"
 		"  --syscalls           Enable high-volume syscall enter/exit events\n"
 		"  --syscalls-enter-only  Enable syscall enter events only\n"
+		"  --fork-identities    Require typed fork child IDs (needs target scope)\n"
 		"  --no-file            Disable BPF LSM file sensors\n"
 		"  --target-pid PID     Collect only this process TGID\n"
 		"  --target-cgroup ID   Collect only this cgroup ID\n"
@@ -963,6 +984,7 @@ static int parse_options(int argc, char **argv, struct options *options)
 		{ "syscalls", no_argument, NULL, 's' },
 		{ "syscalls-enter-only", no_argument, NULL,
 		  OPTION_SYSCALLS_ENTER_ONLY },
+		{ "fork-identities", no_argument, NULL, OPTION_FORK_IDENTITIES },
 		{ "no-file", no_argument, NULL, 'F' },
 		{ "target-pid", required_argument, NULL, 'p' },
 		{ "target-cgroup", required_argument, NULL, 'c' },
@@ -1001,6 +1023,9 @@ static int parse_options(int argc, char **argv, struct options *options)
 		case OPTION_SYSCALLS_ENTER_ONLY:
 			options->enable_syscalls = true;
 			options->syscalls_enter_only = true;
+			break;
+		case OPTION_FORK_IDENTITIES:
+			options->fork_identities = true;
 			break;
 		case 'F':
 			options->enable_files = false;
@@ -1337,6 +1362,12 @@ int main(int argc, char **argv)
 			"--syscalls requires --target-pid or --target-cgroup to prevent an event storm\n");
 		return EXIT_FAILURE;
 	}
+	if (options.fork_identities && !options.target_tgid &&
+	    !options.target_cgroup_id) {
+		fprintf(stderr,
+			"--fork-identities requires --target-pid or --target-cgroup\n");
+		return EXIT_FAILURE;
+	}
 	if (options.network_burst && !options.network_rate) {
 		fprintf(stderr, "--network-burst requires --network-rate\n");
 		return EXIT_FAILURE;
@@ -1359,6 +1390,21 @@ int main(int argc, char **argv)
 		error = -ENOMEM;
 		goto cleanup;
 	}
+	/* Choose exactly one fork hook before load; opt-in never falls back. */
+	error = bpf_program__set_autoload(skeleton->progs.handle_process_fork,
+					 !options.fork_identities);
+	if (!error)
+		error = bpf_program__set_autoload(
+			skeleton->progs.handle_process_fork_identities,
+			options.fork_identities);
+	if (error) {
+		fprintf(stderr, "failed to select fork hook: %d\n", error);
+		goto cleanup;
+	}
+	bpf_program__set_autoattach(skeleton->progs.handle_process_fork,
+				    !options.fork_identities);
+	bpf_program__set_autoattach(skeleton->progs.handle_process_fork_identities,
+				    options.fork_identities);
 	network_skeleton = server_bpf__open();
 	if (!network_skeleton) {
 		fprintf(stderr, "failed to open network eBPF skeleton\n");
@@ -1498,6 +1544,9 @@ int main(int argc, char **argv)
 	error = host_events_bpf__load(skeleton);
 	if (error) {
 		fprintf(stderr, "failed to load eBPF programs: %d\n", error);
+		if (options.fork_identities)
+			fputs("--fork-identities requires tp_btf/sched_process_fork; no fallback\n",
+			      stderr);
 		goto cleanup;
 	}
 	error = server_bpf__load(network_skeleton);
@@ -1560,8 +1609,14 @@ int main(int argc, char **argv)
 	}
 
 	error = host_events_bpf__attach(skeleton);
+	if (!error && options.fork_identities &&
+	    !skeleton->links.handle_process_fork_identities)
+		error = -EOPNOTSUPP;
 	if (error) {
 		fprintf(stderr, "failed to attach eBPF programs: %d\n", error);
+		if (options.fork_identities)
+			fputs("--fork-identities requires tp_btf/sched_process_fork; no fallback\n",
+			      stderr);
 		goto cleanup;
 	}
 	error = server_bpf__attach(network_skeleton);
@@ -1673,9 +1728,10 @@ int main(int argc, char **argv)
 	signal(SIGTERM, handle_signal);
 	signal(SIGPIPE, SIG_IGN);
 	fprintf(stderr,
-		"host event sensors started (syscalls=%s files=%s target_pid=%u)\n",
+		"host event sensors started (syscalls=%s files=%s target_pid=%u fork_identities=%s)\n",
 		options.enable_syscalls ? "on" : "off",
-		options.enable_files ? "on" : "off", options.target_tgid);
+		options.enable_files ? "on" : "off", options.target_tgid,
+		options.fork_identities ? "on" : "off");
 
 	while (!stop) {
 		uint64_t now;

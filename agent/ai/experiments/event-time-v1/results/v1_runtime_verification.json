@@ -1,0 +1,1 @@
+{"session_id": "data_event_time_raw_20261001_valid_1590718396996034_s3", "matched_buckets": 384, "extra_runtime_buckets": 0, "projected_features": 26, "threshold": 0.17333333333333337, "tp": 133, "fp": 5, "tn": 245, "fn": 1, "total": 384, "note": "Integration agreement on held-out buckets; no threshold tuning or new performance estimate."}

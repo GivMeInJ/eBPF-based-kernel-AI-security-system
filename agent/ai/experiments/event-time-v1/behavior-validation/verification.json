@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "observed_advisories": 2,
+  "event_gaps_sec": [
+    600.096403106,
+    10.034326357
+  ],
+  "negative_admin_pair_advisories": 0,
+  "precursor_only_advisories": 0,
+  "verified_fork_edges": 7,
+  "complete_replay": true,
+  "scope": "advisory_only_verified_task_lineage",
+  "not_attack_accuracy": true
+}

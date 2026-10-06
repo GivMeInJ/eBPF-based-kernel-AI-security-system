@@ -1,0 +1,22 @@
+{
+  "bucket_ns": 1000000000,
+  "timeline_intervals": 93,
+  "unique_buckets": 388,
+  "kept": 388,
+  "earliest_timestamp_ns": 1590083361041977,
+  "latest_timestamp_ns": 1590586843405208,
+  "missing_units": [],
+  "bucket_records": 388,
+  "duplicate_buckets": 0,
+  "skipped_duplicate": 0,
+  "health_records": 491,
+  "other_records": 0,
+  "truncated_final_lines": 0,
+  "normal": 187,
+  "attack": 135,
+  "precursor": 66,
+  "skipped_unlabeled": 0,
+  "skipped_mixed": 0,
+  "skipped_boundary": 0,
+  "skipped_unknown": 0
+}

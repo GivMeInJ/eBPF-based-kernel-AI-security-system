@@ -1,0 +1,23 @@
+{
+  "event_counts": {
+    "HEALTH": 615,
+    "FILE_OPEN": 309,
+    "PROCESS_EXEC": 8,
+    "PROCESS_FORK": 7,
+    "PROCESS_EXIT": 8,
+    "NETWORK_CONNECT": 3
+  },
+  "forks": 7,
+  "valid_fork_identities": 7,
+  "child_tokens_matched": 7,
+  "probe": {
+    "dummy_credentials_only": true,
+    "destination": "owned_local_host",
+    "connect_result_required": 111,
+    "real_sleep_sec": 600.0,
+    "fresh_episode_sleep_sec": 10,
+    "expected_advisories": 2,
+    "intent": "regression fixture",
+    "not_an_attack_accuracy_measurement": true
+  }
+}

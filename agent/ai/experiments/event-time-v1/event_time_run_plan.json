@@ -1,0 +1,26 @@
+{
+  "status": "preregistered_candidate_experiment",
+  "target_calibration_fpr": 0.005,
+  "random_forest": {"n_estimators": 300, "random_state": 42, "class_weight": "balanced"},
+  "partition": "Four complete unique sessions. First two sorted session IDs train; third calibrates the threshold using normal buckets only; fourth is held out. No held-out tuning.",
+  "bucket_sec": 1,
+  "raw_features": 31,
+  "model_features": 26,
+  "excluded_features": ["frac_missing", "frac_not_world_readable", "frac_other_owner", "frac_setuid", "n_net_dst_log"],
+  "label_policy": "Administrator-like precursors are normal. Only the six allowlisted local/dummy risk simulations are positive. Labels describe simulations, not human identity or compromise.",
+  "collection_requirements": "All 93 units complete, no event loss, exact raw/collector network counts. Optional socket metadata absence must be reconciled and reported, never treated as complete.",
+  "first_capture": "/whs/data_event_time_raw_20261001_retry/session_1",
+  "first_capture_sources_sha256": {
+    "bench_event_time.raw_capture_20261001.sh": "94b28ac12a0cdedd641a58874b7e92496fccc2f5bc6d498c81c40927bd3c4885",
+    "attacks.sh": "edf2be66a4e3ec018ee8d497b9c45168cb0c04f42f419f5cc5c20e541e576a44",
+    "workload.sh": "45e2032a444d02e79695d9fac8494dfa6da6781905dc237a3f5fff0b2c87c5ec",
+    "host-events": "3b4131bab775f44bfa31dd68494d32e17ae1f347f16427b38dbfc3d814ccfab3",
+    "server.c": "5ad32f318a6c72bed76a34239455affb8eba3daea2e7f94fbe28395c7fac2659",
+    "syscall_map_x86_64.json": "2af113b3d333ed7f11528ae037650d4a1aa837fc8a8da18980890099f9530908"
+  },
+  "existing_model_sha256": "a23958676ba8090fdc8caea161a3e4f640fc56b559da35430aa63123c0392aab",
+  "existing_metadata_sha256": "ec4c579a5d1a715e6c5f671af9d0a95ae24378e7b85af1ee256921daf0b60049",
+  "existing_live_threshold": 0.67,
+  "time_basis": "Event and timeline CLOCK_MONOTONIC nanoseconds. Wall clock and file modification dates are not label inputs.",
+  "deployment": "Candidate is offline only until evaluation and independent verification. Existing live model remains unchanged."
+}

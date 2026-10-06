@@ -1,0 +1,487 @@
+{
+  "kind": "bucket",
+  "bucket_sec": 1.0,
+  "feature_names": [
+    "n_windows_log",
+    "n_procs_log",
+    "n_comms_log",
+    "n_syscalls_log",
+    "syscall_diversity",
+    "n_files_log",
+    "n_uniq_files_log",
+    "n_uniq_dirs_log",
+    "files_per_proc",
+    "frac_missing",
+    "frac_not_world_readable",
+    "frac_other_owner",
+    "frac_setuid",
+    "frac_hidden",
+    "frac_write",
+    "proc_pid_breadth_log",
+    "proc_pid_frac",
+    "sensitive_dir_breadth",
+    "max_path_depth",
+    "mean_path_depth",
+    "n_net_log",
+    "n_net_dst_log",
+    "n_exec_log",
+    "exec_per_proc",
+    "n_uniq_syscalls_log",
+    "frac_dir_etc",
+    "frac_dir_proc",
+    "frac_dir_usr",
+    "frac_dir_dev",
+    "frac_dir_tmp",
+    "frac_dir_other"
+  ],
+  "excluded_features": [
+    "frac_missing",
+    "frac_not_world_readable",
+    "frac_other_owner",
+    "frac_setuid",
+    "n_net_dst_log"
+  ],
+  "feature_schema": "event_time_stable_v1",
+  "threshold": 0.16666666666666669,
+  "target_fpr": 0.005,
+  "split_ids": {
+    "training": [
+      "data_event_time_raw_20261001_retry_1585828012323417_s1",
+      "data_event_time_raw_20261001_valid_1589451886696267_s1",
+      "data_event_time_raw_20261001_valid_1590085196259850_s2",
+      "data_event_time_raw_20261001_valid_1590718396996034_s3"
+    ],
+    "calibration": [
+      "data_event_time_raw_20261001_verify_v2_1591970702321541_s1"
+    ],
+    "test": [
+      "data_event_time_raw_20261001_verify_v2_retest_1594334844323370_s1"
+    ]
+  },
+  "versions": {
+    "numpy": "2.2.6",
+    "sklearn": "1.6.1",
+    "joblib": "1.6.0"
+  },
+  "sample_counts": {
+    "training": {
+      "total": 1548,
+      "normal": 1016,
+      "attack": 532
+    },
+    "calibration": {
+      "total": 388,
+      "normal": 254,
+      "attack": 134
+    },
+    "test": {
+      "total": 389,
+      "normal": 255,
+      "attack": 134
+    }
+  },
+  "calibration": {
+    "normal_buckets_used": 254,
+    "normal_fpr": 0.003937007874015748,
+    "threshold_source": "calibration-session normal scores only"
+  },
+  "held_out_test": {
+    "threshold": 0.16666666666666669,
+    "dr": 0.9925373134328358,
+    "fpr": 0.0,
+    "tp": 133,
+    "fp": 0,
+    "tn": 255,
+    "fn": 1,
+    "total": 389,
+    "per_technique": {
+      "bulk_exfil": {
+        "total": 2,
+        "tp": 2,
+        "fn": 0,
+        "dr": 1.0
+      },
+      "dns_exfil": {
+        "total": 4,
+        "tp": 4,
+        "fn": 0,
+        "dr": 1.0
+      },
+      "ransom_sim": {
+        "total": 33,
+        "tp": 33,
+        "fn": 0,
+        "dr": 1.0
+      },
+      "resource_hijack": {
+        "total": 61,
+        "tp": 61,
+        "fn": 0,
+        "dr": 1.0
+      },
+      "reverse_shell": {
+        "total": 3,
+        "tp": 3,
+        "fn": 0,
+        "dr": 1.0
+      },
+      "wiper_sim": {
+        "total": 31,
+        "tp": 30,
+        "fn": 1,
+        "dr": 0.967741935483871
+      }
+    },
+    "false_positive_by_technique": {
+      "precursor:cap_enum": {
+        "total": 7,
+        "fp": 0
+      },
+      "precursor:cgroup_probe": {
+        "total": 2,
+        "fp": 0
+      },
+      "precursor:clipboard_probe": {
+        "total": 3,
+        "fp": 0
+      },
+      "precursor:history_evasion": {
+        "total": 2,
+        "fp": 0
+      },
+      "precursor:history_harvest": {
+        "total": 2,
+        "fp": 0
+      },
+      "precursor:interp_exec": {
+        "total": 8,
+        "fp": 0
+      },
+      "precursor:log_tamper": {
+        "total": 2,
+        "fp": 0
+      },
+      "precursor:network_enum": {
+        "total": 3,
+        "fp": 0
+      },
+      "precursor:ns_probe": {
+        "total": 2,
+        "fp": 0
+      },
+      "precursor:obfuscated_exec": {
+        "total": 1,
+        "fp": 0
+      },
+      "precursor:path_hijack": {
+        "total": 2,
+        "fp": 0
+      },
+      "precursor:read_shadow": {
+        "total": 2,
+        "fp": 0
+      },
+      "precursor:read_ssh_keys": {
+        "total": 2,
+        "fp": 0
+      },
+      "precursor:read_sudoers": {
+        "total": 1,
+        "fp": 0
+      },
+      "precursor:screengrab_probe": {
+        "total": 2,
+        "fp": 0
+      },
+      "precursor:staged_archive": {
+        "total": 1,
+        "fp": 0
+      },
+      "precursor:sudo_probe": {
+        "total": 2,
+        "fp": 0
+      },
+      "precursor:suid_enum": {
+        "total": 1,
+        "fp": 0
+      },
+      "precursor:symlink_race": {
+        "total": 5,
+        "fp": 0
+      },
+      "precursor:timestomp": {
+        "total": 4,
+        "fp": 0
+      },
+      "precursor:user_enum": {
+        "total": 3,
+        "fp": 0
+      },
+      "precursor:writable_probe": {
+        "total": 4,
+        "fp": 0
+      },
+      "precursor:xattr_probe": {
+        "total": 3,
+        "fp": 0
+      },
+      "w_awk": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_b64_pipeline": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_bash": {
+        "total": 3,
+        "fp": 0
+      },
+      "w_bg": {
+        "total": 4,
+        "fp": 0
+      },
+      "w_bzip2": {
+        "total": 27,
+        "fp": 0
+      },
+      "w_cap_audit": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_clang": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_config_read": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_cron_admin": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_cut": {
+        "total": 2,
+        "fp": 0
+      },
+      "w_diff": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_dirtree": {
+        "total": 2,
+        "fp": 0
+      },
+      "w_disk": {
+        "total": 9,
+        "fp": 0
+      },
+      "w_encode": {
+        "total": 2,
+        "fp": 0
+      },
+      "w_env": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_fifo": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_file_append": {
+        "total": 9,
+        "fp": 0
+      },
+      "w_file_basic": {
+        "total": 2,
+        "fp": 0
+      },
+      "w_file_mmap": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_file_random": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_file_small": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_file_sparse": {
+        "total": 2,
+        "fp": 0
+      },
+      "w_fork": {
+        "total": 2,
+        "fp": 0
+      },
+      "w_gcc": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_gpp": {
+        "total": 2,
+        "fp": 0
+      },
+      "w_grep": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_gzip": {
+        "total": 6,
+        "fp": 0
+      },
+      "w_hash": {
+        "total": 2,
+        "fp": 0
+      },
+      "w_journal": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_link": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_localconn": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_make": {
+        "total": 2,
+        "fp": 0
+      },
+      "w_man": {
+        "total": 2,
+        "fp": 0
+      },
+      "w_netinfo": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_openssl": {
+        "total": 3,
+        "fp": 0
+      },
+      "w_perl": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_perm": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_ping": {
+        "total": 4,
+        "fp": 0
+      },
+      "w_pip": {
+        "total": 3,
+        "fp": 0
+      },
+      "w_pipe": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_proc": {
+        "total": 2,
+        "fp": 0
+      },
+      "w_ps": {
+        "total": 19,
+        "fp": 0
+      },
+      "w_py_cpu": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_py_io": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_py_proc": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_pyconfig": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_rename": {
+        "total": 4,
+        "fp": 0
+      },
+      "w_sed": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_signal": {
+        "total": 2,
+        "fp": 0
+      },
+      "w_sort": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_ssh_config": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_sudo_admin": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_suid_audit": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_systemd": {
+        "total": 2,
+        "fp": 0
+      },
+      "w_tar": {
+        "total": 5,
+        "fp": 0
+      },
+      "w_time": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_tmpfile": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_unixsock": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_user": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_wc": {
+        "total": 1,
+        "fp": 0
+      },
+      "w_xargs": {
+        "total": 2,
+        "fp": 0
+      },
+      "w_xz": {
+        "total": 25,
+        "fp": 0
+      },
+      "w_zip": {
+        "total": 5,
+        "fp": 0
+      },
+      "w_zstd": {
+        "total": 2,
+        "fp": 0
+      }
+    }
+  },
+  "note": "Simulated event-time bucket labels; DR/FPR are bucket-level, not incident-level."
+}

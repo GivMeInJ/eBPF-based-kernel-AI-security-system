@@ -10,6 +10,7 @@ import struct
 FRAME = struct.Struct("<4sBBHI")
 COMMON = struct.Struct("<QQQ8IiIIHH16s")
 PROCESS = struct.Struct("<IIiI256s")
+FORK = struct.Struct("<IIIIQ")
 SYSCALL = struct.Struct("<IIq")
 FILE = struct.Struct("<QQIIII256s")
 NETWORK = struct.Struct("<QQQQqQIiIIHHHHHHB3x16s16s")
@@ -43,6 +44,7 @@ EVENT_SIZES = {
 
 DEST_VALID = 1 << 4
 SOURCE_VALID = 1 << 5
+FORK_CHILD_ID_VALID = 1 << 11
 
 
 class UnsupportedEvent(ValueError):
@@ -98,7 +100,15 @@ def decode_event(payload: bytes) -> dict:
     flags = event["flags"]
     offset = COMMON.size
 
-    if event_type in (1, 2, 3):
+    if event_type == 1:
+        parent, child, _, child_tgid, child_start = FORK.unpack_from(payload, offset)
+        valid = bool(flags & FORK_CHILD_ID_VALID)
+        event.update(
+            parent_pid=parent, child_pid=child,
+            child_tgid=child_tgid if valid else None,
+            child_task_start_ns=child_start if valid else None,
+        )
+    elif event_type in (2, 3):
         parent, child, exit_code, _, filename = PROCESS.unpack_from(payload, offset)
         event.update(parent_pid=parent, child_pid=child)
         if event_type == 2:

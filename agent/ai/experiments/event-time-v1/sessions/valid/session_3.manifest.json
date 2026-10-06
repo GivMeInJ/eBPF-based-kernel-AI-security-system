@@ -1,0 +1,90 @@
+{
+  "session_id": "data_event_time_raw_20261001_valid_1590718396996034_s3",
+  "start_ns": 1590718396996034,
+  "end_ns": 1591210448192719,
+  "source_stat": {
+    "/whs/data_event_time_raw_20261001_valid/session_3.bin": [
+      2051,
+      1442616,
+      5214982840,
+      1790788509442665353,
+      1790788509442665353
+    ],
+    "/whs/data_event_time_raw_20261001_valid/session_3.tsv": [
+      2051,
+      1442516,
+      4865,
+      1790788503393398977,
+      1790788503393398977
+    ],
+    "/whs/data_event_time_raw_20261001_valid/session_3.collector.log": [
+      2051,
+      1442539,
+      858,
+      1790788509442665353,
+      1790788509442665353
+    ]
+  },
+  "collector": {
+    "writer_dropped": {
+      "queue": 0,
+      "priority": 0
+    },
+    "received": {
+      "PROCESS_FORK": 20085,
+      "PROCESS_EXEC": 18997,
+      "PROCESS_EXIT": 20176,
+      "SYSCALL_ENTER": 12564029,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 793612,
+      "FILE_UNLINK": 23088,
+      "NETWORK_CONNECT": 940,
+      "NETWORK_BIND": 2,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 487
+    },
+    "event_lost": {
+      "PROCESS_FORK": 0,
+      "PROCESS_EXEC": 0,
+      "PROCESS_EXIT": 0,
+      "SYSCALL_ENTER": 0,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 0,
+      "FILE_UNLINK": 0,
+      "NETWORK_CONNECT": 0,
+      "NETWORK_BIND": 0,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 0
+    },
+    "network_statistics": {
+      "map_update_failed": 0,
+      "socket_read_failed": 1,
+      "ringbuf_lost": 0,
+      "user_read_failed": 0,
+      "filtered": 0,
+      "rate_limited": 0
+    },
+    "socket_metadata_complete": false,
+    "note": "Socket metadata absence is recorded separately; exact event counts and zero event-loss counters are required. Missing socket fields remain unknown."
+  },
+  "health": {
+    "records": 487,
+    "first_timestamp_ns": 1590716572519369,
+    "last_timestamp_ns": 1591214462163150,
+    "loss_counters": {
+      "writer_queue_dropped": 0,
+      "writer_priority_dropped": 0,
+      "kernel_ringbuf_lost": 0,
+      "network_rate_limited": 0
+    }
+  },
+  "incomplete_socket_metadata_count": 1,
+  "dataset": "/whs/data_event_time_raw_20261001_valid/session_3.event_time.npz",
+  "note": "Optional unknown socket metadata is preserved; this validation does not claim complete socket metadata or model performance."
+}

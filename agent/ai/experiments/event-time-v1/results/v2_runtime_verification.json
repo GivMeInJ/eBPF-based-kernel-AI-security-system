@@ -1,0 +1,1 @@
+{"session_id": "data_event_time_raw_20261001_verify_v2_retest_1594334844323370_s1", "matched_buckets": 389, "extra_runtime_buckets": 0, "projected_features": 26, "threshold": 0.16666666666666669, "tp": 133, "fp": 0, "tn": 255, "fn": 1, "total": 389, "note": "Integration agreement on held-out buckets; no threshold tuning or new performance estimate."}

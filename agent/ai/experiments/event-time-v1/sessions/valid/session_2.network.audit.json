@@ -1,0 +1,16 @@
+{
+  "network_counts": {
+    "8": 940,
+    "9": 2
+  },
+  "incomplete_socket_metadata": [
+    {
+      "type": 8,
+      "timestamp_ns": 1590293914418513,
+      "flags": 16,
+      "result": 0,
+      "family": 2,
+      "unit": "w_ssh_config"
+    }
+  ]
+}

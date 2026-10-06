@@ -57,6 +57,8 @@ enum agent_event_flags {
 	AGENT_FLAG_NETWORK_NETNS_COOKIE_VALID = 1U << 8,
 	AGENT_FLAG_NETWORK_PROCESS_UNCERTAIN = 1U << 9,
 	AGENT_FLAG_USERSPACE_GENERATED = 1U << 10,
+	/* Child token is valid only in the header's parent cgroup at fork time. */
+	AGENT_FLAG_FORK_CHILD_ID_VALID = 1U << 11,
 };
 
 enum agent_file_operation {
@@ -119,6 +121,15 @@ struct agent_process_payload {
 	char filename[AGENT_PATH_LEN];
 };
 
+/* Start values are identity tokens, not timestamps to compare with event time. */
+struct agent_fork_payload {
+	__u32 parent_pid;
+	__u32 child_pid;
+	__u32 reserved;
+	__u32 child_tgid;
+	__u64 child_task_start_ns;
+};
+
 struct agent_syscall_payload {
 	__u32 syscall_id;
 	__u32 reserved;
@@ -176,6 +187,7 @@ struct agent_event {
 	struct agent_event_header header;
 	union {
 		struct agent_process_payload process;
+		struct agent_fork_payload fork;
 		struct agent_syscall_payload syscall;
 		struct agent_file_payload file;
 		struct agent_network_payload network;

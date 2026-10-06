@@ -1,0 +1,25 @@
+host event sensors started (syscalls=on files=on target_pid=0)
+writer queue dropped=0
+writer priority dropped=0
+event statistics:
+  PROCESS_FORK     received=20133 lost=0
+  PROCESS_EXEC     received=19045 lost=0
+  PROCESS_EXIT     received=20224 lost=0
+  SYSCALL_ENTER    received=13065467 lost=0
+  SYSCALL_EXIT     received=0 lost=0
+  FILE_OPEN        received=819405 lost=0
+  FILE_UNLINK      received=23082 lost=0
+  NETWORK_CONNECT  received=940 lost=0
+  NETWORK_BIND     received=2 lost=0
+  NETWORK_LISTEN   received=0 lost=0
+  NETWORK_ACCEPT   received=0 lost=0
+  NETWORK_UDP_SEND received=0 lost=0
+  NETWORK_TCP_STATE received=0 lost=0
+  HEALTH           received=489 lost=0
+network sensor statistics:
+  map_update_failed    0
+  socket_read_failed   1
+  ringbuf_lost         0
+  user_read_failed     0
+  filtered             0
+  rate_limited         0

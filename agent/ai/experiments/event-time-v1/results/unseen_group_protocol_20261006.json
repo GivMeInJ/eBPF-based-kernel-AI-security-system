@@ -1,0 +1,76 @@
+{
+  "protocol": "event_time_leave_attack_group_out_v1",
+  "groups": {
+    "exfiltration": [
+      "bulk_exfil",
+      "dns_exfil"
+    ],
+    "destructive_files": [
+      "ransom_sim",
+      "wiper_sim"
+    ],
+    "remote_shell": [
+      "reverse_shell"
+    ],
+    "resource_abuse": [
+      "resource_hijack"
+    ]
+  },
+  "session_split": "Exactly six unique sessions sorted by ID: first four form the training pool, penultimate calibrates, last tests.",
+  "training_regimes": {
+    "v1_like_first2": 2,
+    "v2_like_all4": 4
+  },
+  "training": "Remove every target-group attack row; fit only retained training-session rows.",
+  "calibration": "Use only calibration-session normal rows; exclude all calibration attacks.",
+  "test": "Use all test-session normals and only target-group attacks; never tune on test rows.",
+  "rf": {
+    "n_estimators": 300,
+    "max_features": "sqrt",
+    "class_weight": "balanced",
+    "random_state": 42
+  },
+  "target_fpr": 0.005,
+  "raw_feature_names": [
+    "n_windows_log",
+    "n_procs_log",
+    "n_comms_log",
+    "n_syscalls_log",
+    "syscall_diversity",
+    "n_files_log",
+    "n_uniq_files_log",
+    "n_uniq_dirs_log",
+    "files_per_proc",
+    "frac_missing",
+    "frac_not_world_readable",
+    "frac_other_owner",
+    "frac_setuid",
+    "frac_hidden",
+    "frac_write",
+    "proc_pid_breadth_log",
+    "proc_pid_frac",
+    "sensitive_dir_breadth",
+    "max_path_depth",
+    "mean_path_depth",
+    "n_net_log",
+    "n_net_dst_log",
+    "n_exec_log",
+    "exec_per_proc",
+    "n_uniq_syscalls_log",
+    "frac_dir_etc",
+    "frac_dir_proc",
+    "frac_dir_usr",
+    "frac_dir_dev",
+    "frac_dir_tmp",
+    "frac_dir_other"
+  ],
+  "excluded_features": [
+    "frac_missing",
+    "frac_not_world_readable",
+    "frac_other_owner",
+    "frac_setuid",
+    "n_net_dst_log"
+  ],
+  "projected_features": 26,
+  "note": "Controlled local dummy leave-attack-group-out evaluation; not proof of unknown real-world zero-day detection. DR/FPR are bucket-level, not incident-level. Previously inspected sessions are not an untouched blind test. Both regimes omit the target group; the deployed RF that saw all attack types is not an unseen baseline. No model export or deployment."
+}

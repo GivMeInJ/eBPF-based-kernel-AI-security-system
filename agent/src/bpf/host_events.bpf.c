@@ -98,6 +98,29 @@ static __always_inline int event_enabled(__u32 type)
 	return target_matches(cfg, tgid, cgroup_id);
 }
 
+static __always_inline int read_task_start(struct task_struct *task, __u64 *start)
+{
+	if (bpf_core_field_exists(task->start_boottime))
+		return BPF_CORE_READ_INTO(start, task, start_boottime);
+	if (bpf_core_field_exists(task->start_time))
+		return BPF_CORE_READ_INTO(start, task, start_time);
+	return -1;
+}
+
+static __always_inline int read_task_cgroup(struct task_struct *task, __u64 *id)
+{
+	struct css_set *css = 0;
+	struct cgroup *cgroup = 0;
+	struct kernfs_node *node = 0;
+
+	/* Check each CO-RE read, including the intermediate pointers. */
+	if (BPF_CORE_READ_INTO(&css, task, cgroups) || !css ||
+	    BPF_CORE_READ_INTO(&cgroup, css, dfl_cgrp) || !cgroup ||
+	    BPF_CORE_READ_INTO(&node, cgroup, kn) || !node)
+		return -1;
+	return BPF_CORE_READ_INTO(id, node, id);
+}
+
 static __always_inline void fill_common(struct agent_event *event, __u32 type)
 {
 	const struct agent_config *cfg;
@@ -136,12 +159,7 @@ static __always_inline void fill_common(struct agent_event *event, __u32 type)
 	if (task) {
 		event->header.ppid = BPF_CORE_READ(task, real_parent, tgid);
 
-		if (bpf_core_field_exists(task->start_boottime))
-			event->header.task_start_ns =
-				BPF_CORE_READ(task, start_boottime);
-		else if (bpf_core_field_exists(task->start_time))
-			event->header.task_start_ns =
-				BPF_CORE_READ(task, start_time);
+		read_task_start(task, &event->header.task_start_ns);
 	}
 
 	bpf_get_current_comm(event->header.comm, sizeof(event->header.comm));
@@ -176,6 +194,51 @@ int handle_process_fork(struct trace_event_raw_sched_process_fork *ctx)
 	event->data.process.parent_pid = ctx->parent_pid;
 	event->data.process.child_pid = ctx->child_pid;
 
+	bpf_ringbuf_submit(event, 0);
+	return 0;
+}
+
+/* Linux v6.8 sched.h supplies task pointers; fork.c calls before child wakeup. */
+SEC("tp_btf/sched_process_fork")
+int BPF_PROG(handle_process_fork_identities, struct task_struct *parent,
+	     struct task_struct *child)
+{
+	struct agent_event *event;
+	__u32 parent_tgid = 0;
+	__u32 child_tgid = 0;
+	__u64 parent_start = 0;
+	__u64 child_start = 0;
+	__u64 parent_cgroup = 0;
+	__u64 child_cgroup = 0;
+
+	(void)ctx;
+	if (!event_enabled(AGENT_EVENT_PROCESS_FORK) || !parent || !child)
+		return 0;
+	event = reserve_event(AGENT_EVENT_PROCESS_FORK);
+	if (!event)
+		return 0;
+
+	if (BPF_CORE_READ_INTO(&event->data.fork.parent_pid, parent, pid) ||
+	    BPF_CORE_READ_INTO(&event->data.fork.child_pid, child, pid) ||
+	    BPF_CORE_READ_INTO(&parent_tgid, parent, tgid) ||
+	    BPF_CORE_READ_INTO(&child_tgid, child, tgid) ||
+	    read_task_start(parent, &parent_start) ||
+	    read_task_start(child, &child_start) ||
+	    read_task_cgroup(parent, &parent_cgroup) ||
+	    read_task_cgroup(child, &child_cgroup))
+		goto submit;
+	if (event->data.fork.parent_pid != event->header.pid ||
+	    parent_tgid != event->header.tgid ||
+	    parent_start != event->header.task_start_ns ||
+	    !parent_start || !event->data.fork.child_pid || !child_tgid ||
+	    !child_start || !parent_cgroup ||
+	    parent_cgroup != event->header.cgroup_id || child_cgroup != parent_cgroup)
+		goto submit;
+
+	event->data.fork.child_tgid = child_tgid;
+	event->data.fork.child_task_start_ns = child_start;
+	event->header.flags |= AGENT_FLAG_FORK_CHILD_ID_VALID;
+submit:
 	bpf_ringbuf_submit(event, 0);
 	return 0;
 }

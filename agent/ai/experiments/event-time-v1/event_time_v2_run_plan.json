@@ -1,0 +1,84 @@
+{
+  "status": "preregistered_second_candidate_after_v1_holdout_failure",
+  "v1_result": {
+    "test_normal": 250,
+    "test_attack": 134,
+    "tp": 133,
+    "fp": 5,
+    "fn": 1,
+    "tn": 245,
+    "fpr": 0.02
+  },
+  "target_calibration_fpr": 0.005,
+  "reason": "V1 exceeded its intended FPR. Preserve that failed result. Its four sessions now become development/training data; they are never reported again as an unseen V2 test.",
+  "partition": "Six sorted unique sessions: all four V1 sessions train; a fresh verify_v2 session calibrates using normal buckets only; another fresh verify_v2 session is the held-out test. No tuning using either fresh session.",
+  "change": "More independently collected training sessions, including the observed hard normal examples. Same fixed 300-tree RF, seed42, balanced weights, 26 selected features and calibration budget.",
+  "new_capture_directory": "/whs/data_event_time_raw_20261001_verify_v2",
+  "new_sessions": 2,
+  "deployment": "Offline candidate only. Do not promote unless evaluation and integration checks justify it. Point estimates on small simulated sessions do not establish production FPR.",
+  "quality_retry": {
+    "status": "preregistered_quality_only_retry_without_heldout_scores",
+    "trigger": {
+      "capture_prefix": "/whs/data_event_time_raw_20261001_verify_v2/session_2",
+      "completed_units": 93,
+      "writer_queue_dropped": 41495,
+      "accepted_npz": false,
+      "heldout_scores_available": false
+    },
+    "failed_capture_preservation": {
+      "source": "/whs/data_event_time_raw_20261001_verify_v2/session_2.bin",
+      "archive": "/whs/data_event_time_raw_20261001_verify_v2/session_2.bin.zst",
+      "checksum_manifest": "/whs/data_event_time_raw_20261001_verify_v2/session_2.bin.zst.sha256.json",
+      "command": [
+        "python3",
+        "/whs/archive_raw_capture.py",
+        "/whs/data_event_time_raw_20261001_verify_v2/session_2.bin"
+      ],
+      "order": "Archive the closed failed capture with verified checksum before retry collection. Retain its timeline and collector log; never export or score this lossy capture.",
+      "failure": "Stop if verified archival fails; retain raw capture."
+    },
+    "bench_variant": {
+      "local_path": "/Users/givmeinj/claude/scratchpad/whs-diagnostic/bench_event_time_large_buffer.sh",
+      "server_path": "/whs/bench_event_time_large_buffer.sh",
+      "base_script_sha256": "9b9b3f08b3e92c8d4020e82da900cea1e9d20b4c5901bf2a951528876556544d",
+      "substitutions": [
+        {
+          "flag": "--queue-capacity",
+          "before": 65536,
+          "after": 262144
+        }
+      ],
+      "unchanged": "All remaining collector behavior, ring buffer size, workload order policy, workloads, labels, features and finalization criteria remain unchanged.",
+      "ringbuf_bytes_unchanged": 67108864,
+      "isolated_collector": {
+        "directory": "/whs/agent-large-buffer_20261001",
+        "source_change": "Only MAX_QUEUE_CAPACITY and CLI help max: 65536 to262144. Original production binary untouched.",
+        "ring_buffer_limit_unchanged": 67108864
+      }
+    },
+    "capture": {
+      "directory": "/whs/data_event_time_raw_20261001_verify_v2_retest",
+      "sessions": 1,
+      "command": [
+        "bash",
+        "/whs/bench_event_time_large_buffer.sh",
+        "/whs/data_event_time_raw_20261001_verify_v2_retest",
+        "1"
+      ],
+      "acceptance": "Same finalizer: all 93 units, zero actual event loss and reconciled optional socket metadata."
+    },
+    "export": {
+      "npz_count": 6,
+      "training": "All four previously accepted V1 NPZ sessions, selected from the original V1 candidate provenance.",
+      "calibration_npz": "/whs/data_event_time_raw_20261001_verify_v2/session_1.event_time.npz",
+      "calibration_rows": "Normal rows only determine the threshold; calibration session never trains the RF.",
+      "test_npz": "/whs/data_event_time_raw_20261001_verify_v2_retest/session_1.event_time.npz",
+      "rejected_capture_excluded": "/whs/data_event_time_raw_20261001_verify_v2/session_2",
+      "canonical_session_order": "Before export, assert all six NPZ IDs are unique and their sorted order is exactly four old V1 training IDs, accepted verify_v2/session_1 calibration ID, fresh verify_v2_retest/session_1 test ID. Preserve original IDs; do not relabel sessions to force this order.",
+      "target_calibration_fpr": 0.005,
+      "no_heldout_tuning": true,
+      "model": "Same fixed 300-tree RF, random_state 42, balanced weights and 26 selected features. This retry changes collection capacity only."
+    },
+    "execution_status": "Local preparation only; archival, collection and export are pending parent execution after review."
+  }
+}

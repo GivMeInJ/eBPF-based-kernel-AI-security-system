@@ -1,0 +1,6 @@
+{"phase": "admin_config_then_local_attempt", "timestamp_ns": 1591302196633165}
+{"phase": "dummy_precursor", "episode": 1, "timestamp_ns": 1591302199541289, "sleep_sec": 600.0}
+{"phase": "local_attempt", "episode": 1, "timestamp_ns": 1591902298654708}
+{"phase": "dummy_precursor", "episode": 2, "timestamp_ns": 1591902302729274, "sleep_sec": 10}
+{"phase": "local_attempt", "episode": 2, "timestamp_ns": 1591912340384903}
+{"phase": "precursor_only", "timestamp_ns": 1591912344797088}

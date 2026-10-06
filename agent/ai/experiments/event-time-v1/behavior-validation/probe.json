@@ -1,0 +1,10 @@
+{
+  "dummy_credentials_only": true,
+  "destination": "owned_local_host",
+  "connect_result_required": 111,
+  "real_sleep_sec": 600.0,
+  "fresh_episode_sleep_sec": 10,
+  "expected_advisories": 2,
+  "intent": "regression fixture",
+  "not_an_attack_accuracy_measurement": true
+}
