@@ -1,0 +1,37 @@
+{
+  "status": "complete",
+  "ground_truth": "unlabeled",
+  "source_sha256": "d2e244c495d5293885d9705ebf568182d8f9bedfb2f74caa88acfb9c3ee635ec",
+  "line_count": 7182,
+  "roles": {
+    "trainset": {
+      "intervals": 1795,
+      "duration_seconds": 1800.001714845,
+      "mean_cores": 0.0,
+      "p95_cores": 0.0,
+      "max_cores": 0.0
+    },
+    "cron": {
+      "intervals": 1795,
+      "duration_seconds": 1800.002100527,
+      "mean_cores": 0.01593447362733773,
+      "p95_cores": 0.027942985262351647,
+      "max_cores": 0.753923464025357
+    },
+    "docker": {
+      "intervals": 1795,
+      "duration_seconds": 1800.002431869,
+      "mean_cores": 0.0007398484448808345,
+      "p95_cores": 0.001466713427988415,
+      "max_cores": 0.02771964918741348
+    },
+    "containerd": {
+      "intervals": 1795,
+      "duration_seconds": 1800.002731293,
+      "mean_cores": 0.0030886464244453565,
+      "p95_cores": 0.0072803628825711,
+      "max_cores": 0.016311726136326733
+    }
+  },
+  "limits": "Configured daemon cgroups are not all container workloads. Idle trainset supplies no high-load normal baseline. No BPF alignment or attack labeling."
+}

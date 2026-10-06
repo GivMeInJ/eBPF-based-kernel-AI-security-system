@@ -1,0 +1,5 @@
+{
+  "status": "excluded",
+  "server_output": "/whs/cpu_context_probe_20261006",
+  "reason": "Initial runner lacked parent deadline, readiness/coverage acceptance and SIGTERM cleanup; source was replaced while preliminary run was active. Only fresh guarded run is eligible for reported metrics."
+}

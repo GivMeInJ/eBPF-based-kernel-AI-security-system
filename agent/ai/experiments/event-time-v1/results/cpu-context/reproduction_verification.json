@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "episode_count": 12,
+  "interval_count": 127,
+  "fixed_threshold_and_metrics_reproduced": true,
+  "continuous_intervals_each_episode": true,
+  "source_and_artifact_hashes_match": true,
+  "sampler_sha256": "442bb8a17d2ea3cb4eca42b2002b5ff4b3bc5116f37e37edc953d1245581e0a4",
+  "mean_cpu_by_label": {
+    "0": 0.4726999580860465,
+    "1": 0.480507917971549
+  }
+}

@@ -69,6 +69,18 @@ CPU 입력을 확보하기 위해 [읽기 전용 수집 코드](src/sample_cgrou
 
 [30분 수집 실행 기록](results/temporal-unlinks/cpu_collection_run.json)에 따라 서버에 1초 간격의 제한된 CPU 관측도 시작했다. 데이터는 `/whs/cgroup_cpu_roles_20261006.jsonl`, 오류 로그는 `/whs/cgroup_cpu_roles_20261006.log`에 남긴다. 확인 당시 실행 중이었으며, 이 기록이 현재의 실시간 상태를 보장하지는 않는다. 반복 일정이나 자동 AI 점검·알림은 추가하지 않았다. 모델·경보 정책은 그대로 유지한다.
 
+[완료 검증](results/temporal-unlinks/cpu_collection_complete.json)에서는 네 역할 각각 1,795개 연속 구간과 약 1,800초의 관측, 완료 마커, coverage 오류 0건을 확인했다. `trainset` CPU는 전 구간 0이었다. 이 자료에는 승인 여부나 공격 라벨이 없으므로 정상 고부하 학습 자료로 쓰지 않는다.
+
+### CPU 승인 맥락 대조 실험
+
+[실험 코드](src/probe_cpu_context.py)는 동일 역할에서 같은 계산을 승인·미승인으로 설정한 합성 대조군을 만든다. 라벨은 외부 실험 계획의 승인 정책이며 실제 악성 의도가 아니다. 작업에 라벨을 전달하지 않고 CPU 사용량만 측정한다. SHA256, PBKDF2, 정수 계산을 서로 다른 개발·보정·시험 쌍으로 고정하고 각 조건을 역순으로도 실행한다. 개발 쌍에서는 모델을 학습하지 않으며, 승인 보정 쌍 두 개의 최대 CPU 점수 바로 위를 임계값으로 사용한다. 시험 결과로 임계값을 바꾸지 않는다.
+
+수집은 새로운 전용 cgroup의 반 코어 제한과 episode별 10초 계산으로 한정한다. 작업의 cgroup 진입·CPU quota·시작 확인과 부모의 시간 제한, 종료 신호에 대한 작업 정리를 검사한다. 유효 CPU 부하와 시간 범위를 충족하지 않으면 완료 평가를 거부한다. 이 대조 실험은 CPU만 사용하는 기준의 한계를 확인하기 위한 것이며, 실제 자원 남용 공격이나 일반적인 미학습 공격 탐지율 평가를 대신하지 않는다. 정상 보정·시험 표본이 각각 두 개뿐이므로 낮은 운영 FPR을 보장할 수 없다.
+
+[실측 결과](results/cpu-context/evaluation.json)는 시험의 미승인 모사 두 개 중 TP 1·FN 1, 승인 두 개 중 FP 1·TN 1이었다. 합성 정책 라벨에 대한 검출 비율과 FPR은 각각 50%이며, **이 수치를 실제 공격 탐지율로 보고하지 않는다**. 최초 예비 실행은 시작·정리 보장이 부족해 제외하고, 수정 후 새 실행의 12개 episode만 사용했다. [측정값](results/cpu-context/episodes.jsonl), [구간 기록](results/cpu-context/intervals.jsonl), [고정 계획](results/cpu-context/protocol.json), [종료 검증](results/cpu-context/termination_verification.json)을 보존한다. 별도의 [다음 데이터 요건](results/cpu-context/followup_plan.json)은 검증된 task 계보와 CPU 시간 정렬, 독립 승인 작업 정보, 정상 고부하 대조군 및 새 가족별 시험을 요구한다. 이번 실험은 모델 학습·export·운영 적용을 수행하지 않았다.
+
+CPU 평균의 분모는 작업 준비 확인부터 부모의 마지막 읽기까지 실제 경과 시간이다. 1초 종료 확인 간격 때문에 끝부분의 유휴 시간이 포함될 수 있으며, 이 측정은 task의 정확한 계산 구간과 같지 않다. 관측된 작은 점수 차이를 악성 의도의 증거로 해석하지 않는다. 임계값·혼동행렬 재현과 episode별 연속 구간 확인은 [재현 검증](results/cpu-context/reproduction_verification.json)에 기록했다.
+
 ### 다음 연구 방향
 
 1. **기존 정상 전용 IsolationForest 학습 방식 재사용:** 저장소에는 이미 정상 syscall 트레이스만으로 IsolationForest를 학습하는 [train.py](../../train.py)가 있으며 [루트 README](../../../../README.md)도 이 파이프라인을 설명한다. 이 학습 아이디어를 출발점으로 역할·워크로드별 정상 기준과 정상 관리자 작업 대조군을 마련하고, 정상 기준에서 벗어나는 행동을 평가하는 방향을 권장한다.

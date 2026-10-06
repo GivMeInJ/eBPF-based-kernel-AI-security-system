@@ -1,0 +1,14 @@
+{
+  "status": "development_negative_control",
+  "decision": "CPU and role alone are not promoted to an attack classifier. Verify matched approved compute before proposing contextual features.",
+  "next_dataset_requirements": [
+    "Verified task identity and typed fork lineage; never guessed PPID ancestry",
+    "CPU usage with verified clock alignment and process or job scope",
+    "Independent approved-job metadata recorded before execution; no scenario-name features",
+    "Normal high-load compilation/compression/maintenance controls plus dummy behavioral sequences, with matched role/CPU negative controls",
+    "Whole run and scenario family held out, no overlapping windows across splits",
+    "Normal-only threshold calibration before fresh family test; report DR, FPR, uncertainty, coverage and latency",
+    "Keep post-attack normal work in test; test delayed and repeated sequences without reset at label boundaries"
+  ],
+  "promotion_gate": "Fresh family evaluation must improve recall while satisfying normal-calibrated operating constraint. Tiny synthetic policy-label study does not satisfy this gate."
+}

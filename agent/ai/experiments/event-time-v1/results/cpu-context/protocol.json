@@ -1,0 +1,87 @@
+{
+  "study": "matched CPU authorization negative control",
+  "episode_seconds": 10.0,
+  "cpu_max": "50000 100000",
+  "role": "isolated_compute",
+  "ground_truth": "synthetic policy authorization, not malicious intent",
+  "split_rule": "entire sessions/pairs and compute families disjoint; fixed before collection",
+  "plan": [
+    {
+      "split": "train",
+      "family": "sha256",
+      "pair": 0,
+      "synthetic_policy_label": 0
+    },
+    {
+      "split": "train",
+      "family": "sha256",
+      "pair": 0,
+      "synthetic_policy_label": 1
+    },
+    {
+      "split": "train",
+      "family": "sha256",
+      "pair": 1,
+      "synthetic_policy_label": 1
+    },
+    {
+      "split": "train",
+      "family": "sha256",
+      "pair": 1,
+      "synthetic_policy_label": 0
+    },
+    {
+      "split": "calibration",
+      "family": "pbkdf2",
+      "pair": 0,
+      "synthetic_policy_label": 0
+    },
+    {
+      "split": "calibration",
+      "family": "pbkdf2",
+      "pair": 0,
+      "synthetic_policy_label": 1
+    },
+    {
+      "split": "calibration",
+      "family": "pbkdf2",
+      "pair": 1,
+      "synthetic_policy_label": 1
+    },
+    {
+      "split": "calibration",
+      "family": "pbkdf2",
+      "pair": 1,
+      "synthetic_policy_label": 0
+    },
+    {
+      "split": "test",
+      "family": "arithmetic",
+      "pair": 0,
+      "synthetic_policy_label": 0
+    },
+    {
+      "split": "test",
+      "family": "arithmetic",
+      "pair": 0,
+      "synthetic_policy_label": 1
+    },
+    {
+      "split": "test",
+      "family": "arithmetic",
+      "pair": 1,
+      "synthetic_policy_label": 1
+    },
+    {
+      "split": "test",
+      "family": "arithmetic",
+      "pair": 1,
+      "synthetic_policy_label": 0
+    }
+  ],
+  "features": [
+    "cpu_cores_mean"
+  ],
+  "authorization_not_feature": true,
+  "source_sha256": "acc0ac6c7677088822c2b8a743cdc96ab53a0e879b4fac4faebc891a92c67afa"
+}

@@ -1,0 +1,6 @@
+{
+  "parent_exit_code": 1,
+  "owned_cgroup_removed": true,
+  "incomplete_run_not_scored": true,
+  "stderr": "terminated; cleaning up owned worker and cgroup"
+}
