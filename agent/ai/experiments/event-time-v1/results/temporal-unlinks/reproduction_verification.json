@@ -1,0 +1,6 @@
+{
+  "six_guarded_audits_complete": true,
+  "unchanged_thresholds_and_metric_aggregates": true,
+  "unchanged_normal_model_input_hashes": true,
+  "note": "Compared final guarded refit to initial context report. No parameters, fitting masks or thresholds tuned. This is development reproducibility, not a fresh blind test or runtime deployment parity proof."
+}

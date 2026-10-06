@@ -1,0 +1,290 @@
+{
+  "/whs/data_event_time_raw_20261001_retry/session_1": {
+    "writer_dropped": {
+      "queue": 0,
+      "priority": 0
+    },
+    "received": {
+      "PROCESS_FORK": 20058,
+      "PROCESS_EXEC": 18970,
+      "PROCESS_EXIT": 20149,
+      "SYSCALL_ENTER": 13063624,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 817969,
+      "FILE_UNLINK": 23082,
+      "NETWORK_CONNECT": 940,
+      "NETWORK_BIND": 2,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 491
+    },
+    "event_lost": {
+      "PROCESS_FORK": 0,
+      "PROCESS_EXEC": 0,
+      "PROCESS_EXIT": 0,
+      "SYSCALL_ENTER": 0,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 0,
+      "FILE_UNLINK": 0,
+      "NETWORK_CONNECT": 0,
+      "NETWORK_BIND": 0,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 0
+    },
+    "network_statistics": {
+      "map_update_failed": 0,
+      "socket_read_failed": 1,
+      "ringbuf_lost": 0,
+      "user_read_failed": 0,
+      "filtered": 0,
+      "rate_limited": 0
+    },
+    "socket_metadata_complete": false,
+    "note": "Socket metadata absence is recorded separately; exact event counts and zero event-loss counters are required. Missing socket fields remain unknown."
+  },
+  "/whs/data_event_time_raw_20261001_valid/session_1": {
+    "writer_dropped": {
+      "queue": 0,
+      "priority": 0
+    },
+    "received": {
+      "PROCESS_FORK": 20133,
+      "PROCESS_EXEC": 19045,
+      "PROCESS_EXIT": 20224,
+      "SYSCALL_ENTER": 13065467,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 819405,
+      "FILE_UNLINK": 23082,
+      "NETWORK_CONNECT": 940,
+      "NETWORK_BIND": 2,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 489
+    },
+    "event_lost": {
+      "PROCESS_FORK": 0,
+      "PROCESS_EXEC": 0,
+      "PROCESS_EXIT": 0,
+      "SYSCALL_ENTER": 0,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 0,
+      "FILE_UNLINK": 0,
+      "NETWORK_CONNECT": 0,
+      "NETWORK_BIND": 0,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 0
+    },
+    "network_statistics": {
+      "map_update_failed": 0,
+      "socket_read_failed": 1,
+      "ringbuf_lost": 0,
+      "user_read_failed": 0,
+      "filtered": 0,
+      "rate_limited": 0
+    },
+    "socket_metadata_complete": false,
+    "note": "Socket metadata absence is recorded separately; exact event counts and zero event-loss counters are required. Missing socket fields remain unknown."
+  },
+  "/whs/data_event_time_raw_20261001_valid/session_2": {
+    "writer_dropped": {
+      "queue": 0,
+      "priority": 0
+    },
+    "received": {
+      "PROCESS_FORK": 20259,
+      "PROCESS_EXEC": 19171,
+      "PROCESS_EXIT": 20350,
+      "SYSCALL_ENTER": 13074830,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 821057,
+      "FILE_UNLINK": 23088,
+      "NETWORK_CONNECT": 940,
+      "NETWORK_BIND": 2,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 491
+    },
+    "event_lost": {
+      "PROCESS_FORK": 0,
+      "PROCESS_EXEC": 0,
+      "PROCESS_EXIT": 0,
+      "SYSCALL_ENTER": 0,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 0,
+      "FILE_UNLINK": 0,
+      "NETWORK_CONNECT": 0,
+      "NETWORK_BIND": 0,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 0
+    },
+    "network_statistics": {
+      "map_update_failed": 0,
+      "socket_read_failed": 1,
+      "ringbuf_lost": 0,
+      "user_read_failed": 0,
+      "filtered": 0,
+      "rate_limited": 0
+    },
+    "socket_metadata_complete": false,
+    "note": "Socket metadata absence is recorded separately; exact event counts and zero event-loss counters are required. Missing socket fields remain unknown."
+  },
+  "/whs/data_event_time_raw_20261001_valid/session_3": {
+    "writer_dropped": {
+      "queue": 0,
+      "priority": 0
+    },
+    "received": {
+      "PROCESS_FORK": 20085,
+      "PROCESS_EXEC": 18997,
+      "PROCESS_EXIT": 20176,
+      "SYSCALL_ENTER": 12564029,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 793612,
+      "FILE_UNLINK": 23088,
+      "NETWORK_CONNECT": 940,
+      "NETWORK_BIND": 2,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 487
+    },
+    "event_lost": {
+      "PROCESS_FORK": 0,
+      "PROCESS_EXEC": 0,
+      "PROCESS_EXIT": 0,
+      "SYSCALL_ENTER": 0,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 0,
+      "FILE_UNLINK": 0,
+      "NETWORK_CONNECT": 0,
+      "NETWORK_BIND": 0,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 0
+    },
+    "network_statistics": {
+      "map_update_failed": 0,
+      "socket_read_failed": 1,
+      "ringbuf_lost": 0,
+      "user_read_failed": 0,
+      "filtered": 0,
+      "rate_limited": 0
+    },
+    "socket_metadata_complete": false,
+    "note": "Socket metadata absence is recorded separately; exact event counts and zero event-loss counters are required. Missing socket fields remain unknown."
+  },
+  "/whs/data_event_time_raw_20261001_verify_v2/session_1": {
+    "writer_dropped": {
+      "queue": 0,
+      "priority": 0
+    },
+    "received": {
+      "PROCESS_FORK": 20040,
+      "PROCESS_EXEC": 18952,
+      "PROCESS_EXIT": 20131,
+      "SYSCALL_ENTER": 13091405,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 819687,
+      "FILE_UNLINK": 23082,
+      "NETWORK_CONNECT": 940,
+      "NETWORK_BIND": 2,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 491
+    },
+    "event_lost": {
+      "PROCESS_FORK": 0,
+      "PROCESS_EXEC": 0,
+      "PROCESS_EXIT": 0,
+      "SYSCALL_ENTER": 0,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 0,
+      "FILE_UNLINK": 0,
+      "NETWORK_CONNECT": 0,
+      "NETWORK_BIND": 0,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 0
+    },
+    "network_statistics": {
+      "map_update_failed": 0,
+      "socket_read_failed": 1,
+      "ringbuf_lost": 0,
+      "user_read_failed": 0,
+      "filtered": 0,
+      "rate_limited": 0
+    },
+    "socket_metadata_complete": false,
+    "note": "Socket metadata absence is recorded separately; exact event counts and zero event-loss counters are required. Missing socket fields remain unknown."
+  },
+  "/whs/data_event_time_raw_20261001_verify_v2_retest/session_1": {
+    "writer_dropped": {
+      "queue": 0,
+      "priority": 0
+    },
+    "received": {
+      "PROCESS_FORK": 20064,
+      "PROCESS_EXEC": 18919,
+      "PROCESS_EXIT": 20155,
+      "SYSCALL_ENTER": 12155775,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 792035,
+      "FILE_UNLINK": 23082,
+      "NETWORK_CONNECT": 940,
+      "NETWORK_BIND": 2,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 489
+    },
+    "event_lost": {
+      "PROCESS_FORK": 0,
+      "PROCESS_EXEC": 0,
+      "PROCESS_EXIT": 0,
+      "SYSCALL_ENTER": 0,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 0,
+      "FILE_UNLINK": 0,
+      "NETWORK_CONNECT": 0,
+      "NETWORK_BIND": 0,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 0
+    },
+    "network_statistics": {
+      "map_update_failed": 0,
+      "socket_read_failed": 1,
+      "ringbuf_lost": 0,
+      "user_read_failed": 0,
+      "filtered": 0,
+      "rate_limited": 0
+    },
+    "socket_metadata_complete": false,
+    "note": "Socket metadata absence is recorded separately; exact event counts and zero event-loss counters are required. Missing socket fields remain unknown."
+  }
+}

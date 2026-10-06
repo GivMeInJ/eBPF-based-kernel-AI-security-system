@@ -1,0 +1,15 @@
+{
+  "status_at_check": "running",
+  "pid": 3638747,
+  "duration_seconds": 1800,
+  "interval_seconds": 1,
+  "ground_truth": "unlabeled",
+  "roles": {"trainset": 14225, "cron": 4966, "docker": 9292, "containerd": 6286},
+  "sampler": "/whs/sample_cgroup_cpu.py",
+  "data": "/whs/cgroup_cpu_roles_20261006.jsonl",
+  "process_log": "/whs/cgroup_cpu_roles_20261006.log",
+  "evidence_at_check": "Process alive at 4 minutes 24 seconds; 1057 JSONL lines; empty error log. This is a work snapshot, not a live status guarantee.",
+  "completed_pilot": "cpu_pilot.jsonl contains 12 valid intervals across four configured scopes plus completion; no coverage errors.",
+  "limitations": "No model scoring or normal/attack label inference. Daemon scopes do not include all container workloads. CPU intervals include descendants, not per-task use. BPF timestamp alignment and controlled role-labeled training/validation remain pending.",
+  "automation": "One bounded server process; no recurring schedule, AI rechecks or notifications. Inspect logs when the user requests."
+}

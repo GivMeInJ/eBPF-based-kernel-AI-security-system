@@ -1,0 +1,16 @@
+{
+  "goal": "Improve held-out attack-family detection using causal file-change history with low normal-task false positives.",
+  "status": "Fixed development experiment; existing inspected corpus, not a blind test",
+  "features": "Existing 26 stable features versus the same 26 plus 8 unlink features: current log-count and known directory-scope log-count, trailing log-count and active-second fraction for 5/30/60 seconds.",
+  "time_rule": "Score after current one-second bucket closes. A W-second window includes current bucket and preceding W-1 seconds; future rows never affect earlier features. Warm-up is 59 elapsed seconds per session.",
+  "scope": "Each accepted session's monitored cgroup. Do not infer same-task or process-lineage relationships. No state reset at technique, label or workload boundaries. A gap without a recorded unlink event contributes zero observed unlink activity, not proof of complete process inactivity.",
+  "inputs": "The existing six accepted single-session NPZs and corresponding closed compressed captures. Validate exact bucket/session/label/technique joins and raw/collector unlink counts. Refuse outside-NPZ unlink events before deriving features.",
+  "split": "First four sessions in stable ID order for training; fifth for calibration; sixth for test. Keep the prior dataset order and untouched artifacts.",
+  "normal_only_model": "IsolationForest300, seed42, max_samples auto, max_features1.0, bootstrapfalse, contaminationauto, n_jobs1. Fit only training normals whose entire 60-second history contains no positive attack bucket.",
+  "held_out_groups": "Separate diagnostic RandomForest300, seed42, sqrt, balanced for each existing four semantic groups. Exclude target attacks and every retained training row whose 60-second history contains a target-group attack bucket.",
+  "calibration": "Only fifth-session normal rows with warm-up complete and no positive attack bucket in their trailing 60-second history. Shared normal_cutoff with target FPR0.005; fail if no eligible normals remain.",
+  "test": "Sixth-session warmed-up rows. Do not purge test normals using preceding attack labels. Group diagnostics report all eligible normals plus that group's positives.",
+  "comparison": "Baseline26 and augmented34 use identical eligible row IDs, order, models and threshold-selection rule. Report excluded counts, TP/FN/FP/TN and per-technique metrics. Do not tune parameters or thresholds from test results.",
+  "limitations": "Unlink hooks are attempts, not successful deletion. Scope uses nonzero device/directory-inode pairs; partial basename is not a full path. Sixty-second features do not establish arbitrary-sleep coverage; existing verified-lineage memory is a separate experiment. No role or measured CPU features exist yet.",
+  "deployment": "No exports, model replacement, live alarm-policy change or automatic recurring checks. Fresh role-labeled normal controls and fresh held-out-family validation are required before promotion."
+}
