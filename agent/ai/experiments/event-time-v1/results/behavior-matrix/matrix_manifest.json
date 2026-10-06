@@ -1,0 +1,66 @@
+[
+  {
+    "mode": "admin_config_connect",
+    "label": "normal",
+    "expected_advisories": 0,
+    "start_ns": 2076425557401484,
+    "end_ns": 2076425723412169,
+    "leader_pid": 3828045
+  },
+  {
+    "mode": "credential_only",
+    "label": "normal",
+    "expected_advisories": 0,
+    "start_ns": 2076425723630236,
+    "end_ns": 2076425839404933,
+    "leader_pid": 3828049
+  },
+  {
+    "mode": "connect_then_credential",
+    "label": "normal",
+    "expected_advisories": 0,
+    "start_ns": 2076425839590521,
+    "end_ns": 2076425955615695,
+    "leader_pid": 3828051
+  },
+  {
+    "mode": "independent_precursor",
+    "label": "normal",
+    "expected_advisories": 0,
+    "start_ns": 2076425955846825,
+    "end_ns": 2076426072297363,
+    "leader_pid": 3828054
+  },
+  {
+    "mode": "independent_connect",
+    "label": "normal",
+    "expected_advisories": 0,
+    "start_ns": 2076426072633754,
+    "end_ns": 2076426189612122,
+    "leader_pid": 3828067
+  },
+  {
+    "mode": "approved_credential_connect",
+    "label": "normal",
+    "expected_advisories": 1,
+    "start_ns": 2076426189770050,
+    "end_ns": 2076431341280877,
+    "leader_pid": 3828080
+  },
+  {
+    "mode": "synthetic_sequence",
+    "label": "synthetic_risk",
+    "expected_advisories": 1,
+    "start_ns": 2076431341519270,
+    "end_ns": 2076436500030314,
+    "leader_pid": 3828238
+  },
+  {
+    "mode": "synthetic_delayed_repeat",
+    "label": "synthetic_risk",
+    "expected_advisories": 2,
+    "start_ns": 2076436500290290,
+    "end_ns": 2076451679327218,
+    "leader_pid": 3828409
+  }
+]

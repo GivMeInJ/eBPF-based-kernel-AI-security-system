@@ -1,0 +1,14 @@
+{
+  "reviewer": "independent agent Harvey",
+  "status": "GO for bounded code and reporting publication",
+  "promotion": "NO model or policy promotion",
+  "verified": "strict sensor-root checks, updated source/input hashes, identical whole-capture advisories and summary",
+  "counts": {
+    "job_roots": 8,
+    "typed_forks": 15,
+    "credential_hooks": 7,
+    "connect_attempts": 7,
+    "advisories": 4
+  },
+  "limits": "Local independent verification used Linux errno constants; server source-writer closure checks were not repeated."
+}

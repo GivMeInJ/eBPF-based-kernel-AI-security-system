@@ -1,0 +1,360 @@
+{
+  "status": "passed",
+  "continuous_replay_no_label_reset": true,
+  "sensor_attribution_verified": true,
+  "jobs": [
+    {
+      "mode": "admin_config_connect",
+      "label": "normal",
+      "expected_advisories": 0,
+      "start_ns": 2076425557401484,
+      "end_ns": 2076425723412169,
+      "leader_pid": 3828045,
+      "credential_hooks": 0,
+      "connect_attempts": 1,
+      "advisories": 0,
+      "root_exit_verified": true,
+      "typed_forks": 2,
+      "application_refused_connects": 1
+    },
+    {
+      "mode": "credential_only",
+      "label": "normal",
+      "expected_advisories": 0,
+      "start_ns": 2076425723630236,
+      "end_ns": 2076425839404933,
+      "leader_pid": 3828049,
+      "credential_hooks": 1,
+      "connect_attempts": 0,
+      "advisories": 0,
+      "root_exit_verified": true,
+      "typed_forks": 1,
+      "application_refused_connects": 0
+    },
+    {
+      "mode": "connect_then_credential",
+      "label": "normal",
+      "expected_advisories": 0,
+      "start_ns": 2076425839590521,
+      "end_ns": 2076425955615695,
+      "leader_pid": 3828051,
+      "credential_hooks": 1,
+      "connect_attempts": 1,
+      "advisories": 0,
+      "root_exit_verified": true,
+      "typed_forks": 2,
+      "application_refused_connects": 1
+    },
+    {
+      "mode": "independent_precursor",
+      "label": "normal",
+      "expected_advisories": 0,
+      "start_ns": 2076425955846825,
+      "end_ns": 2076426072297363,
+      "leader_pid": 3828054,
+      "credential_hooks": 1,
+      "connect_attempts": 0,
+      "advisories": 0,
+      "root_exit_verified": true,
+      "typed_forks": 1,
+      "application_refused_connects": 0
+    },
+    {
+      "mode": "independent_connect",
+      "label": "normal",
+      "expected_advisories": 0,
+      "start_ns": 2076426072633754,
+      "end_ns": 2076426189612122,
+      "leader_pid": 3828067,
+      "credential_hooks": 0,
+      "connect_attempts": 1,
+      "advisories": 0,
+      "root_exit_verified": true,
+      "typed_forks": 1,
+      "application_refused_connects": 1
+    },
+    {
+      "mode": "approved_credential_connect",
+      "label": "normal",
+      "expected_advisories": 1,
+      "start_ns": 2076426189770050,
+      "end_ns": 2076431341280877,
+      "leader_pid": 3828080,
+      "credential_hooks": 1,
+      "connect_attempts": 1,
+      "advisories": 1,
+      "root_exit_verified": true,
+      "typed_forks": 2,
+      "application_refused_connects": 1
+    },
+    {
+      "mode": "synthetic_sequence",
+      "label": "synthetic_risk",
+      "expected_advisories": 1,
+      "start_ns": 2076431341519270,
+      "end_ns": 2076436500030314,
+      "leader_pid": 3828238,
+      "credential_hooks": 1,
+      "connect_attempts": 1,
+      "advisories": 1,
+      "root_exit_verified": true,
+      "typed_forks": 2,
+      "application_refused_connects": 1
+    },
+    {
+      "mode": "synthetic_delayed_repeat",
+      "label": "synthetic_risk",
+      "expected_advisories": 2,
+      "start_ns": 2076436500290290,
+      "end_ns": 2076451679327218,
+      "leader_pid": 3828409,
+      "credential_hooks": 2,
+      "connect_attempts": 2,
+      "advisories": 2,
+      "root_exit_verified": true,
+      "typed_forks": 4,
+      "application_refused_connects": 2
+    }
+  ],
+  "summary": {
+    "normal_jobs": 6,
+    "normal_jobs_with_advisory": 1,
+    "synthetic_risk_jobs": 2,
+    "synthetic_risk_advisories": 3,
+    "not_attack_dr_or_operational_fpr": true
+  },
+  "advisories": [
+    {
+      "type": "BEHAVIOR_REVIEW",
+      "advisory_only": true,
+      "scope": "verified_task_lineage",
+      "coverage_confirmed": false,
+      "reason_codes": [
+        "CREDENTIAL_FILE_OPEN_HOOK",
+        "NON_LOOPBACK_CONNECT_ATTEMPT"
+      ],
+      "identity": {
+        "stream_epoch": "behavior-matrix",
+        "cgroup_id": 200065,
+        "pid": 3828237,
+        "tgid": 3828237,
+        "task_start_ns": 2076431279938841
+      },
+      "precursor_identity": {
+        "stream_epoch": "behavior-matrix",
+        "cgroup_id": 200065,
+        "pid": 3828092,
+        "tgid": 3828092,
+        "task_start_ns": 2076426272426686
+      },
+      "root_identity": {
+        "stream_epoch": "behavior-matrix",
+        "cgroup_id": 200065,
+        "pid": 3828080,
+        "tgid": 3828080,
+        "task_start_ns": 2076426190085626
+      },
+      "precursor_ns": 2076426274243588,
+      "attempt_ns": 2076431309462562,
+      "episode": 1
+    },
+    {
+      "type": "BEHAVIOR_REVIEW",
+      "advisory_only": true,
+      "scope": "verified_task_lineage",
+      "coverage_confirmed": false,
+      "reason_codes": [
+        "CREDENTIAL_FILE_OPEN_HOOK",
+        "NON_LOOPBACK_CONNECT_ATTEMPT"
+      ],
+      "identity": {
+        "stream_epoch": "behavior-matrix",
+        "cgroup_id": 200065,
+        "pid": 3828408,
+        "tgid": 3828408,
+        "task_start_ns": 2076436428943381
+      },
+      "precursor_identity": {
+        "stream_epoch": "behavior-matrix",
+        "cgroup_id": 200065,
+        "pid": 3828239,
+        "tgid": 3828239,
+        "task_start_ns": 2076431419731334
+      },
+      "root_identity": {
+        "stream_epoch": "behavior-matrix",
+        "cgroup_id": 200065,
+        "pid": 3828238,
+        "tgid": 3828238,
+        "task_start_ns": 2076431341983902
+      },
+      "precursor_ns": 2076431423038802,
+      "attempt_ns": 2076436459411904,
+      "episode": 2
+    },
+    {
+      "type": "BEHAVIOR_REVIEW",
+      "advisory_only": true,
+      "scope": "verified_task_lineage",
+      "coverage_confirmed": false,
+      "reason_codes": [
+        "CREDENTIAL_FILE_OPEN_HOOK",
+        "NON_LOOPBACK_CONNECT_ATTEMPT"
+      ],
+      "identity": {
+        "stream_epoch": "behavior-matrix",
+        "cgroup_id": 200065,
+        "pid": 3828554,
+        "tgid": 3828554,
+        "task_start_ns": 2076441578211582
+      },
+      "precursor_identity": {
+        "stream_epoch": "behavior-matrix",
+        "cgroup_id": 200065,
+        "pid": 3828410,
+        "tgid": 3828410,
+        "task_start_ns": 2076436568730036
+      },
+      "root_identity": {
+        "stream_epoch": "behavior-matrix",
+        "cgroup_id": 200065,
+        "pid": 3828409,
+        "tgid": 3828409,
+        "task_start_ns": 2076436500757786
+      },
+      "precursor_ns": 2076436572255427,
+      "attempt_ns": 2076441607970057,
+      "episode": 3
+    },
+    {
+      "type": "BEHAVIOR_REVIEW",
+      "advisory_only": true,
+      "scope": "verified_task_lineage",
+      "coverage_confirmed": false,
+      "reason_codes": [
+        "CREDENTIAL_FILE_OPEN_HOOK",
+        "NON_LOOPBACK_CONNECT_ATTEMPT"
+      ],
+      "identity": {
+        "stream_epoch": "behavior-matrix",
+        "cgroup_id": 200065,
+        "pid": 3828855,
+        "tgid": 3828855,
+        "task_start_ns": 2076451627167663
+      },
+      "precursor_identity": {
+        "stream_epoch": "behavior-matrix",
+        "cgroup_id": 200065,
+        "pid": 3828555,
+        "tgid": 3828555,
+        "task_start_ns": 2076441611658469
+      },
+      "root_identity": {
+        "stream_epoch": "behavior-matrix",
+        "cgroup_id": 200065,
+        "pid": 3828409,
+        "tgid": 3828409,
+        "task_start_ns": 2076436500757786
+      },
+      "precursor_ns": 2076441615214519,
+      "attempt_ns": 2076451656877171,
+      "episode": 4
+    }
+  ],
+  "coverage": {
+    "type": "coverage_summary",
+    "advisory_only": true,
+    "scope": "direct_same_task_or_verified_task_lineage",
+    "complete_replay": true,
+    "retention_sec": 3600.0,
+    "max_tasks": 4096,
+    "pending_precursors": 0,
+    "tracked_tasks": 0,
+    "counters": {
+      "advisories": 4,
+      "connect_without_direct_precursor": 3,
+      "credential_open_hooks": 7,
+      "exit_precursors_dropped": 3,
+      "frames": 1278,
+      "health_frames": 32,
+      "leaf_exits": 15,
+      "network_filtered_max": 0,
+      "non_loopback_connect_attempts": 7,
+      "verified_fork_edges": 15,
+      "verified_task_lineage_advisories": 4
+    },
+    "limitations": [
+      "HOOK_NOT_READ_PROOF",
+      "ATTEMPT_NOT_TRANSFER_PROOF",
+      "NO_INTENT_INFERENCE",
+      "UNFLAGGED_DESCENDANTS_UNSUPPORTED",
+      "CROSS_CGROUP_LINEAGE_UNSUPPORTED",
+      "ABSENCE_OF_THREADS_NOT_PROVEN",
+      "COVERAGE_UNCONFIRMED"
+    ]
+  },
+  "collector_quality": {
+    "writer_dropped": {
+      "queue": 0,
+      "priority": 0
+    },
+    "received": {
+      "PROCESS_FORK": 15,
+      "PROCESS_EXEC": 23,
+      "PROCESS_EXIT": 23,
+      "SYSCALL_ENTER": 0,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 1178,
+      "FILE_UNLINK": 0,
+      "NETWORK_CONNECT": 7,
+      "NETWORK_BIND": 0,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 32
+    },
+    "event_lost": {
+      "PROCESS_FORK": 0,
+      "PROCESS_EXEC": 0,
+      "PROCESS_EXIT": 0,
+      "SYSCALL_ENTER": 0,
+      "SYSCALL_EXIT": 0,
+      "FILE_OPEN": 0,
+      "FILE_UNLINK": 0,
+      "NETWORK_CONNECT": 0,
+      "NETWORK_BIND": 0,
+      "NETWORK_LISTEN": 0,
+      "NETWORK_ACCEPT": 0,
+      "NETWORK_UDP_SEND": 0,
+      "NETWORK_TCP_STATE": 0,
+      "HEALTH": 0
+    },
+    "network_statistics": {
+      "map_update_failed": 0,
+      "socket_read_failed": 0,
+      "ringbuf_lost": 0,
+      "user_read_failed": 0,
+      "filtered": 0,
+      "rate_limited": 0
+    },
+    "socket_metadata_complete": true,
+    "note": "Socket metadata absence is recorded separately; exact event counts and zero event-loss counters are required. Missing socket fields remain unknown."
+  },
+  "input_sha256": {
+    "capture.bin": "5e4573c506fa16a342d19e2d6bdcc3d74731bb26fc523ebf3cd3df3c3aed94bc",
+    "collector.log": "341b44dbbe2f5c7ee7bf77919df00b808c7349abdbc9b8d807039f3c6019dc7b",
+    "matrix_manifest.json": "ea0eee80927eb3e268442073860d41003c6a7fca0f50fc4f752348952f480131",
+    "matrix_protocol.json": "fd35b6ba60d43f81aa27ad2c1971be0bdebbc346a91c4ed199e042f93199dfe1",
+    "probe.json": "2fc6af6fae868cb389d5091110bd31a19dc221cfe0ef6ddebca2a55ef8fb0745",
+    "admin_config_connect.phases.jsonl": "4223f2d4450d565d7aee57bff4f0c7ac68c24617a0c4fa5206b48380d64d62c3",
+    "credential_only.phases.jsonl": "26f8ec34c86ae6814c9dbffd304c948fba104ef6e167441603c01a081783b500",
+    "connect_then_credential.phases.jsonl": "e99423ea9685af9f0a316a0325fd42f75ba3a2398856f004c8717bcc0c3c639c",
+    "independent_precursor.phases.jsonl": "128101d914faa0f1ac825bc0a005b300323ee38afe320297bb9fba6565b3eca6",
+    "independent_connect.phases.jsonl": "1f8798b411ce48b9c035a83034af31944f2d3b4c8e9dad6d439888c5a3fbfee7",
+    "approved_credential_connect.phases.jsonl": "9b60e6aaa01a2e111afd817e9520102599332c3fd5243ea1357a526d6c916e66",
+    "synthetic_sequence.phases.jsonl": "6cc218c5fa5ef07caf4523c66b7750c86c08ce55ab5656356954f53a483fd9c2",
+    "synthetic_delayed_repeat.phases.jsonl": "eb5fc1e6609191a44624d1fe77bd65f1bad0c6bc100b19ac2b4b54de633ffa21"
+  },
+  "limits": "All jobs are benign dummy fixtures. Approved matched sequence intentionally produces an advisory. Kernel EINPROGRESS is not refusal; application refusal is separately fixture-recorded, not kernel proof. No intent inference, transfer, trained model efficacy or operational FPR claim. Clock interval matching checked only for this run, not a CPU/BPF clock integration."
+}

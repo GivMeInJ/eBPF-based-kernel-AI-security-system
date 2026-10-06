@@ -5,6 +5,7 @@ advisory about observable events, not proof of malicious intent or transfer.
 """
 import argparse
 import errno
+import hashlib
 import ipaddress
 import json
 import os
@@ -17,6 +18,16 @@ import time
 import uuid
 
 CGROUP_WRAPPER = 'echo $$ > "$1/cgroup.procs" || exit 1; shift; exec "$@"'
+MATRIX = (
+    ("admin_config_connect", "normal", 0),
+    ("credential_only", "normal", 0),
+    ("connect_then_credential", "normal", 0),
+    ("independent_precursor", "normal", 0),
+    ("independent_connect", "normal", 0),
+    ("approved_credential_connect", "normal", 1),
+    ("synthetic_sequence", "synthetic_risk", 1),
+    ("synthetic_delayed_repeat", "synthetic_risk", 2),
+)
 
 
 def cleanup_job(job, cgroup):
@@ -48,7 +59,7 @@ def cleanup_job(job, cgroup):
     job.wait()
 
 
-def worker(credential, config, address, port, gap):
+def worker(credential, config, address, port, gap, mode="legacy"):
     def opened(path):
         subprocess.run(["cat", path], stdout=subprocess.DEVNULL, check=True)
 
@@ -57,6 +68,30 @@ def worker(credential, config, address, port, gap):
                 "r=s.connect_ex((sys.argv[1],int(sys.argv[2]))); "
                 "s.close(); sys.exit(0 if r==errno.ECONNREFUSED else 1)")
         subprocess.run([sys.executable, "-c", code, address, port], check=True)
+        print(json.dumps({"phase": "local_connect_result", "application_result": errno.ECONNREFUSED,
+                          "timestamp_ns": time.monotonic_ns()}), flush=True)
+
+    if mode != "legacy":
+        if mode == "admin_config_connect":
+            opened(config)
+            attempt()
+        elif mode in ("credential_only", "independent_precursor"):
+            opened(credential)
+        elif mode == "independent_connect":
+            attempt()
+        elif mode == "connect_then_credential":
+            attempt()
+            opened(credential)
+        elif mode in ("approved_credential_connect", "synthetic_sequence", "synthetic_delayed_repeat"):
+            delays = (float(gap), 10) if mode == "synthetic_delayed_repeat" else (float(gap),)
+            for delay in delays:
+                opened(credential)
+                time.sleep(delay)
+                attempt()
+        else:
+            raise ValueError("unknown fixture mode")
+        print(json.dumps({"phase": "fixture_complete", "timestamp_ns": time.monotonic_ns()}), flush=True)
+        return
 
     opened(config)
     attempt()
@@ -73,7 +108,7 @@ def worker(credential, config, address, port, gap):
     print(json.dumps({"phase": "precursor_only", "timestamp_ns": time.monotonic_ns()}), flush=True)
 
 
-def run(agent, out, gap):
+def run(agent, out, gap, matrix=False):
     if os.geteuid() != 0 or not 2 <= gap <= 1800:
         raise ValueError("requires root and a gap between 2 and 1800 seconds")
     out = Path(out).resolve()
@@ -97,6 +132,7 @@ def run(agent, out, gap):
     config.chmod(0o600)
     cgroup.mkdir(exist_ok=False)
     collector = job = None
+    old_handler = signal.signal(signal.SIGTERM, lambda *_: sys.exit("probe terminated; cleaning up"))
     try:
         # A bound, non-listening socket reserves an owned local port. Every
         # connect must be refused; there is no listener or data transfer.
@@ -111,15 +147,32 @@ def run(agent, out, gap):
             time.sleep(3)
             if collector.poll() is not None:
                 raise RuntimeError("collector startup failed; retained collector.log")
-            with (out / "phases.jsonl").open("x") as phases:
-                job = subprocess.Popen(
-                    ["bash", "-c", CGROUP_WRAPPER,
-                     "probe", str(cgroup), sys.executable, str(Path(__file__).resolve()),
-                     "--worker", str(credential), str(config), address, port, str(gap)],
-                    stdout=phases, stderr=log, start_new_session=True)
-                status = job.wait(timeout=gap + 120)
-                if status:
-                    raise RuntimeError(f"worker failed: {status}")
+            manifest = []
+            if matrix:
+                (out / "matrix_protocol.json").write_text(json.dumps({"plan": MATRIX,
+                    "gap_sec": gap, "repeat_gap_sec": 10, "retention_sec": 3600,
+                    "purpose": "advisory specificity regression, not model efficacy",
+                    "matched_normal_expected_advisory": True,
+                    "labels_not_detector_inputs": True,
+                    "probe_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                    "collector_sha256": hashlib.sha256(Path(agent).read_bytes()).hexdigest()}, indent=2) + "\n")
+            for mode, label, expected in (MATRIX if matrix else (("legacy", "regression", 2),)):
+                with (out / (mode + ".phases.jsonl" if matrix else "phases.jsonl")).open("x") as phases:
+                    start = time.monotonic_ns()
+                    job = subprocess.Popen(
+                        ["bash", "-c", CGROUP_WRAPPER,
+                         "probe", str(cgroup), sys.executable, str(Path(__file__).resolve()),
+                         "--worker", str(credential), str(config), address, port, str(gap), mode],
+                        stdout=phases, stderr=log, start_new_session=True)
+                    status = job.wait(timeout=gap + 120)
+                    if status:
+                        raise RuntimeError(f"worker failed: {status}")
+                    cleanup_job(job, cgroup)
+                    if (cgroup / "cgroup.procs").read_text().strip():
+                        raise RuntimeError("job left cgroup members")
+                    manifest.append({"mode": mode, "label": label, "expected_advisories": expected,
+                                     "start_ns": start, "end_ns": time.monotonic_ns(), "leader_pid": job.pid})
+                    job = None
             time.sleep(3)
             if collector.poll() is not None:
                 raise RuntimeError("collector ended before probe completion")
@@ -128,8 +181,10 @@ def run(agent, out, gap):
                 raise RuntimeError("collector failed on shutdown")
         result = {"dummy_credentials_only": True, "destination": "owned_local_host",
                   "connect_result_required": errno.ECONNREFUSED, "real_sleep_sec": gap,
-                  "fresh_episode_sleep_sec": 10, "expected_advisories": 2,
+                  "fresh_episode_sleep_sec": 10, "expected_advisories": 4 if matrix else 2,
                   "intent": "regression fixture", "not_an_attack_accuracy_measurement": True}
+        if matrix:
+            (out / "matrix_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     finally:
         try:
             if job is not None:
@@ -149,6 +204,7 @@ def run(agent, out, gap):
                 cgroup.rmdir()
             else:
                 raise RuntimeError("cgroup cleanup incomplete; artifacts retained")
+            signal.signal(signal.SIGTERM, old_handler)
     (out / "probe.json").write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps({"completed": str(out), **result}))
 
@@ -161,5 +217,6 @@ if __name__ == "__main__":
         parser.add_argument("--agent", required=True)
         parser.add_argument("--out", required=True)
         parser.add_argument("--gap-sec", type=float, default=600)
+        parser.add_argument("--matrix", action="store_true", help="run fixed matched normal and synthetic-risk controls")
         args = parser.parse_args()
-        run(args.agent, args.out, args.gap_sec)
+        run(args.agent, args.out, args.gap_sec, args.matrix)

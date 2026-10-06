@@ -10,7 +10,7 @@ from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from probe_behavior_lineage import CGROUP_WRAPPER, cleanup_job, worker
+from probe_behavior_lineage import CGROUP_WRAPPER, MATRIX, cleanup_job, worker
 
 
 if __name__ == "__main__":
@@ -27,6 +27,16 @@ if __name__ == "__main__":
     records = [json.loads(line) for line in output.getvalue().splitlines()]
     assert [r["episode"] for r in records if r["phase"] == "local_attempt"] == [1, 2]
     assert records[-1]["phase"] == "precursor_only"
+    matrix_calls = {}
+    for mode, label, expected in MATRIX:
+        with patch("probe_behavior_lineage.subprocess.run") as run, \
+                patch("probe_behavior_lineage.time.sleep") as sleep, \
+                contextlib.redirect_stdout(io.StringIO()):
+            worker("dummy-key", "admin-config", "192.0.2.1", "54321", "5", mode)
+        matrix_calls[mode] = ([c.args[0] for c in run.call_args_list], [c.args[0] for c in sleep.call_args_list])
+    assert matrix_calls["approved_credential_connect"] == matrix_calls["synthetic_sequence"]
+    assert matrix_calls["synthetic_delayed_repeat"][1] == [5, 10]
+    assert len(matrix_calls["independent_precursor"][0]) == len(matrix_calls["independent_connect"][0]) == 1
     with TemporaryDirectory() as directory:
         root = Path(directory)
         sentinel = root / "must-not-run"

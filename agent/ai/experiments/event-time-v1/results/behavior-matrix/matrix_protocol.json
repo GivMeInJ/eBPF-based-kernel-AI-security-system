@@ -1,0 +1,52 @@
+{
+  "plan": [
+    [
+      "admin_config_connect",
+      "normal",
+      0
+    ],
+    [
+      "credential_only",
+      "normal",
+      0
+    ],
+    [
+      "connect_then_credential",
+      "normal",
+      0
+    ],
+    [
+      "independent_precursor",
+      "normal",
+      0
+    ],
+    [
+      "independent_connect",
+      "normal",
+      0
+    ],
+    [
+      "approved_credential_connect",
+      "normal",
+      1
+    ],
+    [
+      "synthetic_sequence",
+      "synthetic_risk",
+      1
+    ],
+    [
+      "synthetic_delayed_repeat",
+      "synthetic_risk",
+      2
+    ]
+  ],
+  "gap_sec": 5.0,
+  "repeat_gap_sec": 10,
+  "retention_sec": 3600,
+  "purpose": "advisory specificity regression, not model efficacy",
+  "matched_normal_expected_advisory": true,
+  "labels_not_detector_inputs": true,
+  "probe_sha256": "28ff5454abe56fb20407ef8df3e801d4a8b1cc9cedbccd0da550687926cc44c7",
+  "collector_sha256": "c15aff205d53290edca57568832b11531e3853bd7015d2ded7f433b452617f1a"
+}

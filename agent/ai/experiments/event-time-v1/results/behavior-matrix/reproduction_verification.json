@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "whole_capture_replay_identical": true,
+  "all_input_hashes_match": true,
+  "probe_source_matches_recorded_protocol": true,
+  "source_sha256": {
+    "behavior_memory.py": "4c802323d86cc53d55599835276d44be9e2165578429ae3113102a9b236917f9",
+    "probe_behavior_lineage.py": "28ff5454abe56fb20407ef8df3e801d4a8b1cc9cedbccd0da550687926cc44c7",
+    "verify_behavior_matrix.py": "0b4b04433c0725adc13ad61e8a855f5e2f0298f924e499a1adc27ae708286ead"
+  },
+  "limitations": "Raw source writer checks and kernel cleanup ran on server; local proof verifies retained bytes and deterministic replay only.",
+  "strict_sensor_root_reverification": "passed on server; same initial input hashes, jobs, advisory and coverage outputs"
+}

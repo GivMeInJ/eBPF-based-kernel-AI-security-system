@@ -1,0 +1,5 @@
+{
+  "server_output": "/whs/behavior_matrix_20261006",
+  "status": "excluded",
+  "reason": "Initial verifier assumed syscall result ECONNREFUSED; timed Python connection emits EINPROGRESS. New capture records final application refusal separately. No model/rule/threshold tuning."
+}
