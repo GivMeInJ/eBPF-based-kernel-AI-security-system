@@ -1,0 +1,23 @@
+{
+  "goal": "Improve attack-family holdout detection while measuring normal-task false positives separately.",
+  "stage": "Development experiment; no operational promotion",
+  "first_experiment": "Fit normal-only IsolationForest on the existing 26 bucket features. Keep the existing six-session split, normal-only calibration and target FPR 0.005. Compare first-two and all-four training sessions without test tuning.",
+  "completed_experiment": "Both fixed normal-only models recorded TP0/FN134/FP1/TN254. No candidate was exported or deployed. Results: normal_only_evaluation_20261006.json.",
+  "completed_unlink_audit": "All 23082 recorded attempts matched the 389 fixed test buckets, outside=0 and unknown_scope=0. Normal zip cleanup peaked at 8312 attempts versus ransom_sim 105 and wiper_sim 58. Amount and directory breadth alone are not a sufficient rule. Results: unlink_bucket_audit_20261006.json.",
+  "evidence_limits": "The existing corpus has already been inspected. This comparison cannot establish blind unseen-attack efficacy or production FPR.",
+  "telemetry_audit": {
+    "file_destruction": "The accepted retest collector log records 23082 FILE_UNLINK events. detect2.py and the 31-feature aggregate currently do not use unlink-event counts or paths. Reuse these captured events before adding a new sensor. The hook records a basename with partial-path flags, not a full path. Scope counts use known device/directory-inode pairs and report unknown scope separately. An LSM unlink hook is an attempted operation, not proof that deletion succeeded.",
+    "rename": "Current aggregate does not count rename operations. Syscall-enter events can count attempts, but without matching exits they do not prove success; names and affected path scope require additional instrumentation.",
+    "resource_abuse": "Current aggregate includes syscall count and process count but no measured CPU runtime. Duration or syscall volume alone must not be labeled unauthorized resource use.",
+    "roles": "Current six-session benchmark combines normal tasks in one training scope. It cannot validate separate cron, web, container and administrator baselines without new role-labeled normal captures. Role must come from independently configured workload identity, not a test technique label."
+  },
+  "next_gate": "Develop temporal continuity and independently configured role context for repeated file changes, retaining normal cleanup controls. Do not choose a duration threshold from the observed test attack lengths. CPU-runtime evidence is still absent. Freeze the next feature schema, score and calibration rule before collecting fresh validation data.",
+  "fresh_validation": {
+    "training": "Normal role-labeled workloads only for the anomaly model; keep administrator negative controls including bulk file maintenance and sustained compilation.",
+    "calibration": "Separate normal sessions, with no attack rows or test threshold adjustment.",
+    "test": "Fresh normal work and benign local dummy-file simulations from a family withheld from feature/model development. Never execute exploit or CVE payloads.",
+    "quality": "Reject incomplete units, ambiguous labels and event-loss sessions. Record optional metadata gaps separately.",
+    "metrics": "Bucket DR/FPR, incident-level detection and delay, repeat/sleep coverage, and quality counters; do not treat correlated buckets as independent incidents.",
+    "promotion": "Keep candidates offline until independent replay/input compatibility checks and fresh normal/held-out-family evaluation pass. Preserve V1 shadow and original detector."
+  }
+}

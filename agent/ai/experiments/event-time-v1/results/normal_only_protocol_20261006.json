@@ -1,0 +1,80 @@
+{
+  "protocol": "event_time_normal_only_isolation_forest_v1",
+  "session_split": "Exactly six unique single-session NPZs sorted by session ID: first four training pool, penultimate normal-only calibration, last full test.",
+  "training_regimes": {
+    "v1_like_first2": 2,
+    "v2_like_all4": 4
+  },
+  "training": "Fit only normal rows from the first two or all four training sessions; exclude every attack row.",
+  "calibration": "Threshold from only penultimate-session normals; no calibration attacks or test data used for fitting/tuning.",
+  "test": "Score every held-out row once per regime; report full-session metrics plus each attack group against all test normals.",
+  "groups": {
+    "exfiltration": [
+      "bulk_exfil",
+      "dns_exfil"
+    ],
+    "destructive_files": [
+      "ransom_sim",
+      "wiper_sim"
+    ],
+    "remote_shell": [
+      "reverse_shell"
+    ],
+    "resource_abuse": [
+      "resource_hijack"
+    ]
+  },
+  "isolation_forest": {
+    "n_estimators": 300,
+    "random_state": 42,
+    "max_samples": "auto",
+    "max_features": 1.0,
+    "bootstrap": false,
+    "contamination": "auto",
+    "n_jobs": 1
+  },
+  "score": "-score_samples; larger is more anomalous; alert when score >= calibrated threshold",
+  "target_fpr": 0.005,
+  "raw_feature_names": [
+    "n_windows_log",
+    "n_procs_log",
+    "n_comms_log",
+    "n_syscalls_log",
+    "syscall_diversity",
+    "n_files_log",
+    "n_uniq_files_log",
+    "n_uniq_dirs_log",
+    "files_per_proc",
+    "frac_missing",
+    "frac_not_world_readable",
+    "frac_other_owner",
+    "frac_setuid",
+    "frac_hidden",
+    "frac_write",
+    "proc_pid_breadth_log",
+    "proc_pid_frac",
+    "sensitive_dir_breadth",
+    "max_path_depth",
+    "mean_path_depth",
+    "n_net_log",
+    "n_net_dst_log",
+    "n_exec_log",
+    "exec_per_proc",
+    "n_uniq_syscalls_log",
+    "frac_dir_etc",
+    "frac_dir_proc",
+    "frac_dir_usr",
+    "frac_dir_dev",
+    "frac_dir_tmp",
+    "frac_dir_other"
+  ],
+  "excluded_features": [
+    "frac_missing",
+    "frac_not_world_readable",
+    "frac_other_owner",
+    "frac_setuid",
+    "n_net_dst_log"
+  ],
+  "projected_features": 26,
+  "note": "Exploratory evaluation on a previously seen controlled local dummy corpus. All attack rows are excluded from training, but this is not an untouched blind test or proof of real-world zero-day detection. DR/FPR are bucket-level, not incident-level. No model export, runtime change or deployment."
+}
